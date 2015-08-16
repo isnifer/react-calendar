@@ -37,7 +37,9 @@ const WeekDay = React.createClass({
             {calendar__day_current: this.props.current}
         );
         return (
-            <td className={className} onClick={this.onClick}>{this.props.date.getDate()}</td>
+            <td className="calendar__cell" onClick={this.onClick}>
+                <span className={className}>{this.props.date.getDate()}</span>
+            </td>
         );
     }
 });

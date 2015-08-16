@@ -50,8 +50,12 @@ var WeekDay = _react2['default'].createClass({
         var className = (0, _classnames2['default'])('calendar__day', { calendar__day_available: this.inRange() }, { calendar__day_disabled: !this.inRange() }, { calendar__day_current: this.props.current });
         return _react2['default'].createElement(
             'td',
-            { className: className, onClick: this.onClick },
-            this.props.date.getDate()
+            { className: 'calendar__cell', onClick: this.onClick },
+            _react2['default'].createElement(
+                'span',
+                { className: className },
+                this.props.date.getDate()
+            )
         );
     }
 });
