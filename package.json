@@ -1,6 +1,6 @@
 {
   "name": "react-date-range-picker",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "React DateRange Picker",
   "homepage": "https://github.com/iSnifer/react-date-range-picker",
   "license": "MIT",
@@ -25,7 +25,7 @@
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.1.0"
   },
-  "main": "gulpfile.js",
+  "main": "./src/jsx/datepicker.jsx",
   "dependencies": {
     "calendar": "^0.1.0",
     "classnames": "^1.2.1",
