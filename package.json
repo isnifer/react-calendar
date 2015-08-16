@@ -25,7 +25,7 @@
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.1.0"
   },
-  "main": "src/jsx/datepicker.jsx",
+  "main": "build/index.js",
   "dependencies": {
     "calendar": "^0.1.0",
     "classnames": "^1.2.1",
