@@ -10,8 +10,6 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-/* Utils */
-
 var _momentRange = require('moment-range');
 
 var _momentRange2 = _interopRequireDefault(_momentRange);
@@ -190,7 +188,7 @@ var Datepicker = _react2['default'].createClass({
     renderNavigation: function renderNavigation() {
         return _react2['default'].createElement(
             'span',
-            null,
+            { className: 'calendar__arrows' },
             _react2['default'].createElement(
                 'span',
                 { className: 'calendar__arrow calendar__arrow_right',
@@ -213,7 +211,7 @@ var Datepicker = _react2['default'].createClass({
             _react2['default'].createElement(
                 'div',
                 { className: 'calendar__head clearfix' },
-                !this.state.disableNavigation && this.renderNavigation(),
+                !this.props.disableNavigation && !this.props.outsideNavigation && this.renderNavigation(),
                 _react2['default'].createElement(
                     'span',
                     { className: 'calendar__month-name' },
@@ -237,7 +235,8 @@ var Datepicker = _react2['default'].createClass({
                     null,
                     this.renderMonth()
                 )
-            )
+            ),
+            !this.props.disableNavigation && this.props.outsideNavigation && this.renderNavigation()
         );
     }
 });
