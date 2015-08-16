@@ -1,14 +1,23 @@
 import React from 'react';
-
-/* Utils */
 import moment from 'moment-range';
-import {Calendar} from 'calendar';
+import { Calendar } from 'calendar';
 import cn from 'classnames';
 
 const calendar = new Calendar(1);
 const defaultHandler = function () {};
 const monthNames = [
-    'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+    'Январь',
+    'Февраль',
+    'Март',
+    'Апрель',
+    'Май',
+    'Июнь',
+    'Июль',
+    'Август',
+    'Сентябрь',
+    'Октябрь',
+    'Ноябрь',
+    'Декабрь'
 ];
 
 let date = new Date();
@@ -161,7 +170,7 @@ const Datepicker = React.createClass({
     // Рендерим кнопки управления месяцами
     renderNavigation () {
         return (
-            <span>
+            <span className="calendar__arrows">
                 <span className="calendar__arrow calendar__arrow_right"
                       onClick={this.changeMonth.bind(null, 1)}>{'>>'}</span>
                 <span className="calendar__arrow calendar__arrow_left"
@@ -174,7 +183,7 @@ const Datepicker = React.createClass({
         return (
             <div className="calendar">
                 <div className="calendar__head clearfix">
-                    {!this.state.disableNavigation && this.renderNavigation()}
+                    {!this.props.disableNavigation && !this.props.outsideNavigation && this.renderNavigation()}
                     <span className="calendar__month-name">
                         {monthNames[this.state.month] + ', ' + this.state.year}</span>
                 </div>
@@ -188,6 +197,7 @@ const Datepicker = React.createClass({
                         {this.renderMonth()}
                     </tbody>
                 </table>
+                {!this.props.disableNavigation && this.props.outsideNavigation && this.renderNavigation()}
             </div>
         );
     }
