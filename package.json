@@ -2,34 +2,36 @@
   "name": "react-date-range-picker",
   "version": "0.0.7",
   "description": "React DateRange Picker",
+  "keywords": "react, date, range, picker, component, calendar",
   "homepage": "https://github.com/iSnifer/react-date-range-picker",
   "license": "MIT",
   "author": {
     "name": "Anton Kuznetsov",
     "email": "isnifer@gmail.com",
-    "url": "http://isnifer.me/"
+    "url": "http://isnifer.github.io/"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/iSnifer/react-date-range-picker.git"
   },
   "devDependencies": {
-    "babelify": "^6.0.1",
-    "browserify": "^9.0.4",
-    "gulp": "^3.8.11",
-    "gulp-connect": "^2.2.0",
-    "gulp-less": "^3.0.2",
-    "gulp-uglify": "^1.1.0",
-    "gulp-watch": "^4.2.2",
-    "reactify": "^1.1.0",
-    "vinyl-source-stream": "^1.1.0",
-    "watchify": "^3.1.0"
+    "babel-core": "^5.8.22",
+    "babel-loader": "^5.3.2",
+    "gulp": "latest",
+    "gulp-connect": "latest",
+    "gulp-less": "latest",
+    "webpack": "^1.11.0"
   },
   "main": "build/index.js",
   "dependencies": {
-    "calendar": "^0.1.0",
-    "classnames": "^1.2.1",
-    "moment-range": "^1.0.9",
+    "calendar": "latest",
+    "classnames": "latest",
+    "moment-range": "latest",
     "react": "0.13.x"
+  },
+  "scripts": {
+    "watch": "babel src/jsx/datepicker.jsx -o build/index.js -w --stage 0",
+    "prepublish": "babel src/jsx/datepicker.jsx -o build/index.js --stage 0",
+    "demo": "webpack src/jsx/demo.jsx build/js/demo.js --module-bind 'jsx=babel?stage=0' -w"
   }
 }
