@@ -1,0 +1,48 @@
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font: normal 16px "Arial", Tahoma, Verdana;
+}
+
+.demo {
+    padding: 50px 0 0 50px;
+
+    &__part {
+        margin-bottom: 50px;
+    }
+
+    &__title {
+        margin-bottom: 5px;
+    }
+
+    &__props {
+        margin-top: 20px;
+    }
+
+    &__code {
+        margin: 0;
+        display: inline-block;
+        padding: 16px;
+        overflow: auto;
+        font-size: 85%;
+        line-height: 1.45;
+        background-color: #f7f7f7;
+        border-radius: 3px;
+    }
+
+    &__input {
+        margin-bottom: 5px;
+        width: 300px;
+        height: 40px;
+        font-size: 25px;
+        padding: 0 10px;
+    }
+}
+
+@import 'calendar';
