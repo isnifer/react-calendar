@@ -1,42 +1,27 @@
 import React from 'react';
-import moment from 'moment-range';
+import DateRange from 'moment-range';
 import { Calendar } from 'calendar';
 import cn from 'classnames';
+import { MONTH_NAMES, WEEK_NAMES, WEEK_NAMES_SHORT } from './i18n';
 
-const calendar = new Calendar(1);
-const defaultHandler = function () {};
-const monthNames = [
-    'Январь',
-    'Февраль',
-    'Март',
-    'Апрель',
-    'Май',
-    'Июнь',
-    'Июль',
-    'Август',
-    'Сентябрь',
-    'Октябрь',
-    'Ноябрь',
-    'Декабрь'
-];
+let calendar = new Calendar(1);
+const DEFAULT_HANDLER = function () {};
 
-let date = new Date();
-
-const WeekDay = React.createClass({
-    propTypes: {
+class WeekDay extends React.Component {
+    static propTypes = {
         date: React.PropTypes.instanceOf(Date).isRequired,
         range: React.PropTypes.object.isRequired,
         key: React.PropTypes.number,
         onClick: React.PropTypes.func.isRequired
-    },
+    }
 
     inRange () {
         return this.props.range.contains(this.props.date);
-    },
+    }
 
     onClick (e) {
-        return this.inRange() ? this.props.onClick(this.props.date) : e.preventDefault();
-    },
+        return ::this.inRange() ? this.props.onClick(this.props.date) : e.preventDefault();
+    }
 
     render () {
         var className = cn(
@@ -46,68 +31,99 @@ const WeekDay = React.createClass({
             {calendar__day_current: this.props.current}
         );
         return (
-            <td className="calendar__cell" onClick={this.onClick}>
-                <span className={className}>{this.props.date.getDate()}</span>
+            <td className="calendar__cell">
+                <span className={className} onClick={::this.onClick}>{this.props.date.getDate()}</span>
             </td>
         );
     }
-});
+}
 
-const Datepicker = React.createClass({
+class Datepicker extends React.Component {
 
-    getInitialState () {
-        return {
-            range: null,
+    static propTypes = {
+        onClick: React.PropTypes.func,
+        range: React.PropTypes.instanceOf(DateRange),
+        disableNavigation: React.PropTypes.bool,
+        outsideNavigation: React.PropTypes.bool,
+        initialDate: React.PropTypes.instanceOf(Date),
+        locale: React.PropTypes.string,
+        minimumDate: React.PropTypes.instanceOf(Date),
+        maximumDate: React.PropTypes.instanceOf(Date),
+    }
+
+    static defaultProps = {
+
+        // Handler which will be execute when click on day
+        onClick: DEFAULT_HANDLER,
+
+        // Instance of DateRange
+        range: null,
+
+        // If true, navigation will be hidden
+        disableNavigation: false,
+
+        // If true, navigation will be in root container
+        outsideNavigation: false,
+
+        // Available locales: RU, EN, DE, FR, IT, POR, ESP
+        locale: 'RU',
+
+        // Minimum available date
+        minimumDate: new Date(1970, 0, 1),
+
+        // Maximum available date
+        maximumDate: new Date(2100, 0, 1)
+    }
+
+    constructor (props) {
+        super(props);
+
+        this.state = {
             date: null,
             month: null,
+            range: null,
             year: null
         };
-    },
+    }
 
-    propTypes: {
-        onClick: React.PropTypes.func,
-        range: React.PropTypes.object,
-        disableNavigation: React.PropTypes.bool,
-        initialDate: React.PropTypes.instanceOf(Date),
-        initialMonth: React.PropTypes.number,
-        initialYear: React.PropTypes.number,
-        minimumDate: React.PropTypes.instanceOf(Date),
-        maximumDate: React.PropTypes.instanceOf(Date)
-    },
-
-    getDefaultProps () {
-        return {
-            onClick: defaultHandler,
-            range: null,
-            disableNavigation: false,
-            initialMonth: date.getMonth(),
-            initialYear: date.getFullYear(),
-            minimumDate: new Date(2000, 0, 1), // Дата начала учета
-            maximumDate: new Date(2019, 0, 1) // Доступная дата вперед
-        };
-    },
-
+    // Setting up default state of calendar
     componentWillMount () {
-        var state = {
-            month: this.props.initialDate ? this.props.initialDate.getMonth() : this.props.initialMonth,
-            year: this.props.initialYear,
-            range: this.props.range || moment.range(this.props.minimumDate, this.props.maximumDate),
-            date: this.props.initialDate || date
+        const TODAY = new Date();
+
+        // If we have defined 'initialDate' prop
+        // we will use it also for define month and year.
+        // If not it will be TODAY
+        let initialDate = this.props.initialDate || TODAY;
+        let initialRange = this.props.range || new DateRange(this.props.minimumDate, this.props.maximumDate);
+        let state;
+
+        state = {
+            date: initialDate,
+            month: initialDate.getMonth(),
+            year: initialDate.getFullYear()
         };
+
+        // Before set range to state we should check -
+        // is range contains our initialDate.
+        // If not, we will fire Error
+        if (initialRange.contains(initialDate)) {
+            state.range = initialRange;
+        } else {
+            throw new Error('Initial Range doesn\'t contains Initial Date');
+        }
 
         this.setState(state);
-    },
+    }
 
     componentWillReceiveProps (props) {
-        var state = {
-            range: props.range || moment.range(props.minimumDate, props.maximumDate)
-        };
-        this.setState(state);
-    },
+        this.setState({
+            range: props.range || new DateRange(props.minimumDate, props.maximumDate)
+        });
+    }
 
     /**
-     * Хэндлер смены месяца
-     * @param  {Number} direction - направление движения (1, -1)
+     * Change month handler
+     * @param {Number} direction - "1" or "-1"
      */
     changeMonth (direction) {
         var nextMonth = this.state.month + direction;
@@ -123,61 +139,69 @@ const Datepicker = React.createClass({
                 month: this.state.month + direction,
             });
         }
-    },
+    }
 
     /**
-     * Сеттер состояния календаря. А еще он выполняет переданный коллбэк
+     * Calendar state setter
      * @param  {Date} date - выбранная дата
      */
     onClick (date) {
         if (date) {
-            this.setState({date: date});
-            this.props.onClick(date);
+            this.setState({date: date}, this.props.onClick(date));
         }
-    },
+    }
 
-    // Рендерим месяц
     renderMonth () {
 
-        // Двумерный массив, где на верхнем уровне недели
+        // Array of weeks, which contains arrays of days
         // [[Date, Date, ...], [Date, Date, ...], ...]
         var month = calendar.monthDates(this.state.year, this.state.month);
-        return month.map((e, i) => {
-            return <tr className="calendar__week" key={i}>{this.renderWeek(e)}</tr>;
+        return month.map((week, i) => {
+            return <tr className="calendar__week" key={i}>{this.renderWeek(week)}</tr>;
         });
-    },
+    }
 
     /**
-     * Рендерим неделю
-     * @param  {Array} weekDays - массив из дат недели (instanceof Date)
-     * @return {Array} - массив дней недели (React Component)
+     * Render week
+     * @param  {Array} weekDays - array of instanceof Date
+     * @return {Array} - array of Components
      */
     renderWeek (weekDays) {
         return weekDays.map((day, i) => {
             var isCurrent = this.state.date.toDateString() === day.toDateString();
-            return <WeekDay key={i} date={day} range={this.state.range} current={isCurrent}
-                            onClick={this.onClick} />;
+            return (
+                <WeekDay
+                    key={i}
+                    date={day}
+                    range={this.state.range}
+                    current={isCurrent}
+                    onClick={::this.onClick} />
+            );
         });
-    },
+    }
 
-    // Рендерим названия дней недели в шапке
     renderWeekdayNames () {
-        return ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].map(function (e, i) {
-            return <th className="calendar__weekday-name" key={i}>{e}</th>;
+        return WEEK_NAMES[this.props.locale].map((weekname, i) => {
+            return <th className="calendar__weekday-name" key={i}>{weekname}</th>;
         });
-    },
+    }
 
-    // Рендерим кнопки управления месяцами
     renderNavigation () {
         return (
             <span className="calendar__arrows">
-                <span className="calendar__arrow calendar__arrow_right"
-                      onClick={this.changeMonth.bind(null, 1)}>{'>>'}</span>
-                <span className="calendar__arrow calendar__arrow_left"
-                      onClick={this.changeMonth.bind(null, -1)}>{'<<'}</span>
+                <span
+                    className="calendar__arrow calendar__arrow_right"
+                    onClick={this.changeMonth.bind(this, 1)}>
+                    {'>>'}
+                </span>
+                <span
+                    className="calendar__arrow calendar__arrow_left"
+                    onClick={this.changeMonth.bind(this, -1)}>
+                    {'<<'}
+                </span>
             </span>
         );
-    },
+    }
 
     render () {
         return (
@@ -185,7 +209,8 @@ const Datepicker = React.createClass({
                 <div className="calendar__head clearfix">
                     {!this.props.disableNavigation && !this.props.outsideNavigation && this.renderNavigation()}
                     <span className="calendar__month-name">
-                        {monthNames[this.state.month] + ', ' + this.state.year}</span>
+                        {MONTH_NAMES[this.props.locale][this.state.month] + ', ' + this.state.year}
+                    </span>
                 </div>
                 <table className="calendar__month">
                     <thead>
@@ -201,6 +226,6 @@ const Datepicker = React.createClass({
             </div>
         );
     }
-});
+}
 
 export default Datepicker;
