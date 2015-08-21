@@ -22,6 +22,7 @@
     "gulp-connect": "latest",
     "gulp-less": "latest",
     "tap-nyan": "0.0.2",
+    "tap-spec": "^4.1.0",
     "tape": "^4.2.0",
     "webpack": "^1.11.0"
   },
@@ -36,6 +37,6 @@
     "watch": "babel src -o build/index.js -w",
     "prepublish": "babel src -o build/index.js",
     "demo": "webpack demo/jsx/demo.jsx demo/js/demo.js --module-bind 'jsx=babel?stage=0' -w",
-    "test": "babel-node test/datepicker.js | tnyan"
+    "test": "babel-node test/datepicker.js | tap-spec"
   }
 }
