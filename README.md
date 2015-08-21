@@ -2,11 +2,12 @@
 DateRange Picker as React Component
 
 [![npm version](https://img.shields.io/npm/v/react-date-range-picker.svg?style=flat-square)](https://www.npmjs.com/package/react-date-range-picker)
+[![tests](https://travis-ci.org/isnifer/react-date-range-picker.svg?branch=master)](https://travis-ci.org/isnifer/react-date-range-picker)
 [![dependencies](http://img.shields.io/david/isnifer/react-date-range-picker.svg?style=flat-square)](https://david-dm.org/isnifer/react-date-range-picker)
-### Installation 
+### Installation
 `npm install -s react-date-range-picker`
 
-### Example  
+### Example
 ```js
 import React from 'react';
 import Datepicker from 'react-date-range-picker';
@@ -23,7 +24,7 @@ class Demo extends React.Component {
     onClick (date) {
         this.setState({date: date.toLocaleString()});
     }
-    
+
     render () {
         return (
             <div className="demo">
@@ -35,7 +36,7 @@ class Demo extends React.Component {
                     readOnly />
                 <Datepicker onClick={::this.onClick} />
             </div>
-        );   
+        );
     }
 }
 ```
@@ -43,4 +44,4 @@ class Demo extends React.Component {
 ![2015-08-18 11-30-21 react daterange picker](https://cloud.githubusercontent.com/assets/1788245/9325674/bc1df256-459c-11e5-9bb4-5d113eef9e8e.png)
 
 ## Demo is here
-https://isnifer.github.io/react-date-range-picker/  
+https://isnifer.github.io/react-date-range-picker/
