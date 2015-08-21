@@ -34,7 +34,7 @@
   },
   "scripts": {
     "watch": "babel src -o build/index.js -w",
-    "build": "rm -rf build/ && babel src -o build/index.js",
+    "build": "babel src -o build/index.js",
     "demo": "webpack demo/jsx/demo.jsx demo/js/demo.js --module-bind 'jsx=babel?stage=0' -w",
     "test": "babel-node test/datepicker.js | tap-spec",
     "travis": "npm run test",
