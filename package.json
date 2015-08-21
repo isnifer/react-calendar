@@ -15,6 +15,7 @@
     "url": "https://github.com/iSnifer/react-date-range-picker.git"
   },
   "devDependencies": {
+    "babel": "^5.8.21",
     "babel-core": "^5.8.22",
     "babel-loader": "^5.3.2",
     "gulp": "latest",
@@ -34,6 +35,6 @@
     "watch": "babel src -o build/index.js -w",
     "prepublish": "babel src -o build/index.js",
     "demo": "webpack demo/jsx/demo.jsx demo/js/demo.js --module-bind 'jsx=babel?stage=0' -w",
-    "test": "./node_modules/babel-tape-runner/bin/babel-tape-runner test/datepicker.js | tnyan"
+    "test": "babel-tape-runner test/datepicker.js | tnyan"
   }
 }
