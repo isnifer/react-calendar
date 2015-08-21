@@ -1,5 +1,5 @@
 import React from 'react';
-import Datepicker from './datepicker.jsx';
+import Datepicker from '../../build/index.js';
 import DateRange from 'moment-range';
 
 function transformDate (date) {

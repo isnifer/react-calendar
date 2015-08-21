@@ -28,7 +28,35 @@ var _classnames = require('classnames');
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _i18n = require('./i18n');
+var MONTH_NAMES = {
+    RU: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+    EN: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    DE: ['Januari', 'Februari', 'March', 'April', 'Kan', 'June', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'],
+    FR: ['Janvier', 'Février', 'Mars', 'Avril', 'Peut', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+    ITA: ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giu', 'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'],
+    POR: ['Janeiro', 'Fevereiro', 'Março', 'April', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'November', 'Dezembro'],
+    ESP: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Puede', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+};
+
+var WEEK_NAMES = {
+    RU: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
+    EN: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+    DE: ['So.', 'Mo.', 'Di.', 'Mi.', 'Do.', 'Fr.', 'Sa.'],
+    FR: ['dim.', 'lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.'],
+    IT: ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'],
+    POR: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+    ESP: ['Dom.', 'Lun.', 'Mar.', 'Mié.', 'Jue.', 'Vie.', 'Sáb.']
+};
+
+var WEEK_NAMES_SHORT = {
+    RU: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
+    EN: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+    DE: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
+    FR: ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'],
+    IT: ['D', 'L', 'Ma', 'Me', 'G', 'V', 'S'],
+    POR: ['Dom', '2ª', '3ª', '4ª', '5ª', '6ª', 'Sáb'],
+    ESP: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá']
+};
 
 var calendar = new _calendar.Calendar(1);
 var DEFAULT_HANDLER = function DEFAULT_HANDLER() {};
@@ -208,7 +236,7 @@ var Datepicker = (function (_React$Component2) {
     }, {
         key: 'renderWeekdayNames',
         value: function renderWeekdayNames() {
-            return _i18n.WEEK_NAMES[this.props.locale].map(function (weekname, i) {
+            return WEEK_NAMES[this.props.locale].map(function (weekname, i) {
                 return _react2['default'].createElement(
                     'th',
                     { className: 'calendar__weekday-name', key: i },
@@ -246,12 +274,12 @@ var Datepicker = (function (_React$Component2) {
                 { className: 'calendar' },
                 _react2['default'].createElement(
                     'div',
-                    { className: 'calendar__head clearfix' },
-                    !this.props.disableNavigation && !this.props.outsideNavigation && this.renderNavigation(),
+                    { className: 'calendar__head' },
+                    !this.props.disableNavigation && !this.props.outsideNavigation ? this.renderNavigation() : '',
                     _react2['default'].createElement(
                         'span',
                         { className: 'calendar__month-name' },
-                        _i18n.MONTH_NAMES[this.props.locale][this.state.month] + ', ' + this.state.year
+                        MONTH_NAMES[this.props.locale][this.state.month] + ', ' + this.state.year
                     )
                 ),
                 _react2['default'].createElement(
@@ -272,7 +300,7 @@ var Datepicker = (function (_React$Component2) {
                         this.renderMonth()
                     )
                 ),
-                !this.props.disableNavigation && this.props.outsideNavigation && this.renderNavigation()
+                !this.props.disableNavigation && this.props.outsideNavigation ? this.renderNavigation() : ''
             );
         }
     }], [{

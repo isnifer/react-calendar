@@ -20,6 +20,7 @@
     "gulp": "latest",
     "gulp-connect": "latest",
     "gulp-less": "latest",
+    "tap-nyan": "0.0.2",
     "webpack": "^1.11.0"
   },
   "main": "build/index.js",
@@ -30,8 +31,9 @@
     "react": "0.13.x"
   },
   "scripts": {
-    "watch": "babel src/jsx/datepicker.jsx -o build/index.js -w --stage 0",
-    "prepublish": "babel src/jsx/datepicker.jsx -o build/index.js --stage 0",
-    "demo": "webpack src/jsx/demo.jsx build/js/demo.js --module-bind 'jsx=babel?stage=0' -w"
+    "watch": "babel src -o build/index.js -w",
+    "prepublish": "babel src -o build/index.js",
+    "demo": "webpack demo/jsx/demo.jsx demo/js/demo.js --module-bind 'jsx=babel?stage=0' -w",
+    "test": "./node_modules/babel-tape-runner/bin/babel-tape-runner test/datepicker.js | tnyan"
   }
 }
