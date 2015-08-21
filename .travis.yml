@@ -1,2 +1,10 @@
+language: node_js
+node_js:
+- 0.12
+sudo: false
 install: npm install
-script: npm run prepublish
+script: "npm run prepublish"
+after_success: "npm run-script test-browsers"
+branches:
+  only:
+  - master
