@@ -21001,10 +21001,16 @@
 	        }
 	    }, {
 	        key: 'componentWillReceiveProps',
-	        value: function componentWillReceiveProps(props) {
-	            this.setState({
-	                range: props.range || new _momentRange2['default'](props.minimumDate, props.maximumDate)
-	            });
+	        value: function componentWillReceiveProps(nextProps) {
+	            var range = undefined;
+
+	            if (nextProps.range !== this.props.range) {
+	                range = props.range;
+	            } else if (nextProps.minimumDate !== this.props.minimumDate && nextProps.maximumDate !== this.props.maximumDate) {
+	                range = new _momentRange2['default'](nextProps.minimumDate, nextProps.maximumDate);
+	            }
+
+	            this.setState({ range: range });
 	        }
 
 	        /**
