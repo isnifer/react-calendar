@@ -1,0 +1,105 @@
+.clearfix() {
+    &:before,
+    &:after {
+        display: table;
+        content: '';
+        width: 100%;
+    }
+}
+
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font: normal 16px "Arial", Tahoma, Verdana;
+}
+
+.demo {
+    padding: 50px 0 0 50px;
+
+    &__part {
+        margin-bottom: 50px;
+        .clearfix();
+    }
+
+    &__inline {
+        float: left;
+        margin-right: 20px;
+    }
+
+    &__description {
+        font-size: 18px;
+        line-height: 24/18;
+        color: #333;
+    }
+
+    &__ru,
+    &__en {
+        position: relative;
+
+        &:before {
+            content: 'RU';
+            display: block;
+            position: absolute;
+            color: red;
+            top: 3px;
+            left: -18px;
+            font-size: 10px;
+        }
+    }
+
+    &__ru {
+        margin-bottom: 10px;
+    }
+
+    &__en {
+        margin-bottom: 20px;
+
+        &:before {
+            content: 'EN';
+        }
+    }
+
+    &__title {
+        margin-bottom: 5px;
+    }
+
+    &__props {
+        margin-top: 20px;
+    }
+
+    &__code {
+        margin: 0;
+        display: inline-block;
+        padding: 16px;
+        overflow: auto;
+        font-size: 85%;
+        line-height: 1.45;
+        background-color: #f7f7f7;
+        border-radius: 3px;
+    }
+
+    &__input {
+        margin-bottom: 5px;
+        width: 300px;
+        height: 40px;
+        font-size: 25px;
+        padding: 0 10px;
+    }
+
+    &__fork {
+        position: absolute;
+        display: block;
+        overflow: hidden;
+        top: 0;
+        right: 0;
+        border: 0;
+    }
+}
+
+@import 'calendar';
