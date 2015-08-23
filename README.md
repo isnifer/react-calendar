@@ -5,7 +5,7 @@ DateRange Picker as React Component
 [![tests](https://travis-ci.org/isnifer/react-date-range-picker.svg?branch=master)](https://travis-ci.org/isnifer/react-date-range-picker)
 [![dependencies](http://img.shields.io/david/isnifer/react-date-range-picker.svg?style=flat-square)](https://david-dm.org/isnifer/react-date-range-picker)
 ### Installation
-`npm install -s react-date-range-picker`
+`npm install -S react-date-range-picker`
 
 ### Example
 ```js

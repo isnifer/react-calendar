@@ -76,6 +76,9 @@
 	    return [day, month, date.getFullYear()].join('.');
 	}
 
+	var leftRangeDate = new Date(2015, 7, 4);
+	var rightRangeDate = new Date(2015, 7, 27);
+
 	var Demo = (function (_React$Component) {
 	    _inherits(Demo, _React$Component);
 
@@ -85,9 +88,11 @@
 	        _get(Object.getPrototypeOf(Demo.prototype), 'constructor', this).call(this, props);
 
 	        this.state = {
-	            date: transformDate(new Date()),
+	            date1: transformDate(new Date()),
 	            date2: transformDate(new Date(2015, 7, 8)),
-	            date3: transformDate(new Date(2011, 7, 12))
+	            date3: transformDate(new Date(2015, 7, 12)),
+	            date4: leftRangeDate,
+	            date5: rightRangeDate
 	        };
 	    }
 
@@ -107,6 +112,16 @@
 	            this.setState({ date3: transformDate(date) });
 	        }
 	    }, {
+	        key: 'onClickFour',
+	        value: function onClickFour(date) {
+	            this.setState({ date4: date });
+	        }
+	    }, {
+	        key: 'onClickFive',
+	        value: function onClickFive(date) {
+	            this.setState({ date5: date });
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            return _react2['default'].createElement(
@@ -115,11 +130,31 @@
 	                _react2['default'].createElement(
 	                    'div',
 	                    { className: 'demo__part' },
+	                    _react2['default'].createElement(
+	                        'div',
+	                        { className: 'demo__description' },
+	                        _react2['default'].createElement(
+	                            'div',
+	                            { className: 'demo__ru' },
+	                            'Самый простой вариант календаря. Ему передан только callback, ',
+	                            _react2['default'].createElement('br', null),
+	                            'который в свою очередь будет возвращать дату календаря в качестве ',
+	                            _react2['default'].createElement('br', null),
+	                            'единственного аргумента'
+	                        ),
+	                        _react2['default'].createElement(
+	                            'div',
+	                            { className: 'demo__en' },
+	                            'Very simple calendar example. It got only callback, which will pass ',
+	                            _react2['default'].createElement('br', null),
+	                            'selected date as argument.'
+	                        )
+	                    ),
 	                    _react2['default'].createElement('input', {
 	                        type: 'text',
 	                        name: 'date',
 	                        className: 'demo__input',
-	                        value: this.state.date,
+	                        value: this.state.date1,
 	                        readOnly: true }),
 	                    _react2['default'].createElement(_buildIndexJs2['default'], { onClick: this.onClick.bind(this) }),
 	                    _react2['default'].createElement(
@@ -140,60 +175,243 @@
 	                _react2['default'].createElement(
 	                    'div',
 	                    { className: 'demo__part' },
-	                    _react2['default'].createElement('input', {
-	                        type: 'text',
-	                        name: 'date',
-	                        className: 'demo__input',
-	                        value: this.state.date2,
-	                        readOnly: true }),
-	                    _react2['default'].createElement(_buildIndexJs2['default'], {
-	                        onClick: this.onClickTwo.bind(this),
-	                        range: new _momentRange2['default'](new Date(2015, 7, 1), new Date(2015, 7, 16)),
-	                        initialDate: new Date(2015, 7, 8),
-	                        locale: 'EN' }),
 	                    _react2['default'].createElement(
 	                        'div',
-	                        { className: 'demo__props' },
+	                        { className: 'demo__description' },
 	                        _react2['default'].createElement(
 	                            'div',
-	                            { className: 'demo__title' },
-	                            'Source'
+	                            { className: 'demo__ru' },
+	                            'Чуть более сложный вариант календаря. Компонент получил три новых атрибута. ',
+	                            _react2['default'].createElement('br', null),
+	                            'Атрибут ',
+	                            _react2['default'].createElement(
+	                                'em',
+	                                null,
+	                                'range'
+	                            ),
+	                            ' - instanceof \'moment-range\'. Период календаря, ',
+	                            _react2['default'].createElement('br', null),
+	                            'задает пределы доступности выбора дат в календаре. ',
+	                            _react2['default'].createElement('br', null),
+	                            'Атрибут ',
+	                            _react2['default'].createElement(
+	                                'em',
+	                                null,
+	                                'initialDate'
+	                            ),
+	                            ' - instanceof \'Date\'. Дата, которая будет выбрана в календаре ',
+	                            _react2['default'].createElement('br', null),
+	                            'по умолчанию. Важно! Эта дата, должна быть частью периода календаря. ',
+	                            _react2['default'].createElement('br', null),
+	                            'Атрибут ',
+	                            _react2['default'].createElement(
+	                                'em',
+	                                null,
+	                                'locale'
+	                            ),
+	                            ' - instanceof \'String\'. Несколько встроенных локалей на выбор: ',
+	                            _react2['default'].createElement('br', null),
+	                            'RU, EN, DE, FR, ITA, POR, ESP'
 	                        ),
 	                        _react2['default'].createElement(
-	                            'pre',
-	                            { className: 'demo__code' },
-	                            '<Datepicker\n' + '  onClick={::this.onClickTwo}\n' + '  range={new DateRange(new Date(2015, 7, 1), new Date(2015, 7, 16))}\n' + '  initialDate={new Date(2015, 7, 8)}\n' + '  locale="EN" />'
+	                            'div',
+	                            { className: 'demo__en' },
+	                            'A little more complex version of the calendar. The component has received three new attribute. ',
+	                            _react2['default'].createElement('br', null),
+	                            'Attribute ',
+	                            _react2['default'].createElement(
+	                                'em',
+	                                null,
+	                                'range'
+	                            ),
+	                            ' - instanceof \'moment-range\'. Period of the Calendar, ',
+	                            _react2['default'].createElement('br', null),
+	                            'sets limits accessibility to select dates on the calendar. ',
+	                            _react2['default'].createElement('br', null),
+	                            'Attribute ',
+	                            _react2['default'].createElement(
+	                                'em',
+	                                null,
+	                                'initialDate'
+	                            ),
+	                            ' - instanceof \'Date\'. Date to be selected on the calendar default. ',
+	                            _react2['default'].createElement('br', null),
+	                            'Important! This date should be part of the period of the calendar. ',
+	                            _react2['default'].createElement('br', null),
+	                            'Attribute ',
+	                            _react2['default'].createElement(
+	                                'em',
+	                                null,
+	                                'locale'
+	                            ),
+	                            ' - instanceof \'String\'. Several built-in locales to choose from: ',
+	                            _react2['default'].createElement('br', null),
+	                            'RU, EN, DE, FR, ITA, POR, ESP.'
+	                        )
+	                    ),
+	                    _react2['default'].createElement(
+	                        'div',
+	                        { className: 'demo__inline' },
+	                        _react2['default'].createElement('input', {
+	                            type: 'text',
+	                            name: 'date',
+	                            className: 'demo__input',
+	                            value: this.state.date2,
+	                            readOnly: true }),
+	                        _react2['default'].createElement(_buildIndexJs2['default'], {
+	                            onClick: this.onClickTwo.bind(this),
+	                            range: new _momentRange2['default'](new Date(2015, 7, 1), new Date(2015, 7, 16)),
+	                            initialDate: new Date(2015, 7, 8),
+	                            locale: 'EN' }),
+	                        _react2['default'].createElement(
+	                            'div',
+	                            { className: 'demo__props' },
+	                            _react2['default'].createElement(
+	                                'div',
+	                                { className: 'demo__title' },
+	                                'Source'
+	                            ),
+	                            _react2['default'].createElement(
+	                                'pre',
+	                                { className: 'demo__code' },
+	                                '<Datepicker\n' + '  onClick={::this.onClickTwo}\n' + '  range={new DateRange(new Date(2015, 7, 1), new Date(2015, 7, 16))}\n' + '  initialDate={new Date(2015, 7, 8)}\n' + '  locale="EN" />'
+	                            )
+	                        )
+	                    ),
+	                    _react2['default'].createElement(
+	                        'div',
+	                        { className: 'demo__inline' },
+	                        _react2['default'].createElement('input', {
+	                            type: 'text',
+	                            name: 'date',
+	                            className: 'demo__input',
+	                            value: this.state.date3,
+	                            readOnly: true }),
+	                        _react2['default'].createElement(_buildIndexJs2['default'], {
+	                            onClick: this.onClickThree.bind(this),
+	                            range: new _momentRange2['default'](new Date(2015, 7, 4), new Date(2015, 8, 3)),
+	                            initialDate: new Date(2015, 7, 12),
+	                            locale: 'DE' }),
+	                        _react2['default'].createElement(
+	                            'div',
+	                            { className: 'demo__props' },
+	                            _react2['default'].createElement(
+	                                'div',
+	                                { className: 'demo__title' },
+	                                'Source'
+	                            ),
+	                            _react2['default'].createElement(
+	                                'pre',
+	                                { className: 'demo__code' },
+	                                '<Datepicker\n' + '  onClick={::this.onClickThree}\n' + '  range={new DateRange(new Date(2011, 7, 3), new Date(2011, 8, 3))}\n' + '  initialDate={new Date(2011, 7, 12)}\n' + '  locale="DE" />'
+	                            )
 	                        )
 	                    )
 	                ),
 	                _react2['default'].createElement(
 	                    'div',
 	                    { className: 'demo__part' },
-	                    _react2['default'].createElement('input', {
-	                        type: 'text',
-	                        name: 'date',
-	                        className: 'demo__input',
-	                        value: this.state.date3,
-	                        readOnly: true }),
-	                    _react2['default'].createElement(_buildIndexJs2['default'], {
-	                        onClick: this.onClickThree.bind(this),
-	                        range: new _momentRange2['default'](new Date(2011, 7, 3), new Date(2011, 8, 3)),
-	                        initialDate: new Date(2011, 7, 12),
-	                        locale: 'DE' }),
 	                    _react2['default'].createElement(
 	                        'div',
-	                        { className: 'demo__props' },
+	                        { className: 'demo__description' },
 	                        _react2['default'].createElement(
 	                            'div',
-	                            { className: 'demo__title' },
-	                            'Source'
+	                            { className: 'demo__ru' },
+	                            'Этот же вариант позволяет вам связать два календаря между собой. ',
+	                            _react2['default'].createElement('br', null),
+	                            'Довольно популярный кейс, когда у пользователя есть выбор дат С и ПО. ',
+	                            _react2['default'].createElement('br', null),
+	                            'Все, что необходимо - это зафиксировать изначально крайние даты, ',
+	                            _react2['default'].createElement('br', null),
+	                            'в данном примере это константы leftRangeDate и rightRangeDate. ',
+	                            _react2['default'].createElement('br', null),
+	                            'Передать их в качестве левого ограничения для календаря справа и ',
+	                            _react2['default'].createElement('br', null),
+	                            'правого ограничения для календаря справа соотвественно. ',
+	                            _react2['default'].createElement('br', null),
+	                            'Демо ниже более наглядно.'
 	                        ),
 	                        _react2['default'].createElement(
-	                            'pre',
-	                            { className: 'demo__code' },
-	                            '<Datepicker\n' + '  onClick={::this.onClickThree}\n' + '  range={new DateRange(new Date(2011, 7, 3), new Date(2011, 8, 3))}\n' + '  initialDate={new Date(2011, 7, 12)}\n' + '  locale="DE" />'
+	                            'div',
+	                            { className: 'demo__en' },
+	                            'This option allows us to link the two calendars together. ',
+	                            _react2['default'].createElement('br', null),
+	                            'Quite a popular case when the user has a choice of dates FROM and TO. ',
+	                            _react2['default'].createElement('br', null),
+	                            'All that is needed is to fix the original Dates, ',
+	                            _react2['default'].createElement('br', null),
+	                            'in this example leftRangeDate and rightRangeDate are constants. ',
+	                            _react2['default'].createElement('br', null),
+	                            'Send them as the left limit for the calendar on the left and ',
+	                            _react2['default'].createElement('br', null),
+	                            'right limit for the calendar to the right respectively. ',
+	                            _react2['default'].createElement('br', null),
+	                            'The demo below more clearly.'
+	                        )
+	                    ),
+	                    _react2['default'].createElement(
+	                        'div',
+	                        { className: 'demo__inline' },
+	                        _react2['default'].createElement('input', {
+	                            type: 'text',
+	                            className: 'demo__input',
+	                            value: transformDate(this.state.date4),
+	                            readOnly: true }),
+	                        _react2['default'].createElement(_buildIndexJs2['default'], {
+	                            onClick: this.onClickFour.bind(this),
+	                            range: new _momentRange2['default'](leftRangeDate, this.state.date5),
+	                            initialDate: leftRangeDate,
+	                            locale: 'EN' }),
+	                        _react2['default'].createElement(
+	                            'div',
+	                            { className: 'demo__props' },
+	                            _react2['default'].createElement(
+	                                'div',
+	                                { className: 'demo__title' },
+	                                'Source'
+	                            ),
+	                            _react2['default'].createElement(
+	                                'pre',
+	                                { className: 'demo__code' },
+	                                '<input\n' + '  type="text"\n' + '  className="demo__input"\n' + '  value={transformDate(this.state.date4)}\n' + '  readOnly />\n' + '<Datepicker\n' + '  onClick={::this.onClickFour}\n' + '  range={new DateRange(leftRangeDate, this.state.date5)}\n' + '  initialDate={leftRangeDate}\n' + '  locale="EN" />'
+	                            )
+	                        )
+	                    ),
+	                    _react2['default'].createElement(
+	                        'div',
+	                        { className: 'demo__inline' },
+	                        _react2['default'].createElement('input', {
+	                            type: 'text',
+	                            className: 'demo__input',
+	                            value: transformDate(this.state.date5),
+	                            readOnly: true }),
+	                        _react2['default'].createElement(_buildIndexJs2['default'], {
+	                            onClick: this.onClickFive.bind(this),
+	                            range: new _momentRange2['default'](this.state.date4, rightRangeDate),
+	                            initialDate: rightRangeDate,
+	                            locale: 'EN' }),
+	                        _react2['default'].createElement(
+	                            'div',
+	                            { className: 'demo__props' },
+	                            _react2['default'].createElement(
+	                                'div',
+	                                { className: 'demo__title' },
+	                                'Source'
+	                            ),
+	                            _react2['default'].createElement(
+	                                'pre',
+	                                { className: 'demo__code' },
+	                                '<input\n' + '  type="text"\n' + '  className="demo__input"\n' + '  value={transformDate(this.state.date5)}\n' + '  readOnly />\n' + '<Datepicker\n' + '  onClick={::this.onClickFive}\n' + '  range={new DateRange(this.state.date4, rightRangeDate)}\n' + '  initialDate={rightRangeDate}\n' + '  locale="EN" />'
+	                            )
 	                        )
 	                    )
+	                ),
+	                _react2['default'].createElement(
+	                    'a',
+	                    { href: 'https://github.com/isnifer/react-date-range-picker', className: 'demo__fork' },
+	                    _react2['default'].createElement('img', {
+	                        src: 'https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67',
+	                        alt: 'Fork Me on Github' })
 	                )
 	            );
 	        }
@@ -20597,7 +20815,7 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var _react = __webpack_require__(1);
 
@@ -20647,13 +20865,13 @@
 	var DEFAULT_HANDLER = function DEFAULT_HANDLER() {};
 
 	var WeekDay = (function (_React$Component) {
+	    _inherits(WeekDay, _React$Component);
+
 	    function WeekDay() {
 	        _classCallCheck(this, WeekDay);
 
 	        _get(Object.getPrototypeOf(WeekDay.prototype), 'constructor', this).apply(this, arguments);
 	    }
-
-	    _inherits(WeekDay, _React$Component);
 
 	    _createClass(WeekDay, [{
 	        key: 'inRange',
@@ -20694,6 +20912,49 @@
 	})(_react2['default'].Component);
 
 	var Datepicker = (function (_React$Component2) {
+	    _inherits(Datepicker, _React$Component2);
+
+	    _createClass(Datepicker, null, [{
+	        key: 'propTypes',
+	        value: {
+	            onClick: _react2['default'].PropTypes.func,
+	            range: _react2['default'].PropTypes.instanceOf(_momentRange2['default']),
+	            disableNavigation: _react2['default'].PropTypes.bool,
+	            outsideNavigation: _react2['default'].PropTypes.bool,
+	            initialDate: _react2['default'].PropTypes.instanceOf(Date),
+	            locale: _react2['default'].PropTypes.string,
+	            minimumDate: _react2['default'].PropTypes.instanceOf(Date),
+	            maximumDate: _react2['default'].PropTypes.instanceOf(Date)
+	        },
+	        enumerable: true
+	    }, {
+	        key: 'defaultProps',
+	        value: {
+
+	            // Handler which will be execute when click on day
+	            onClick: DEFAULT_HANDLER,
+
+	            // Instance of DateRange
+	            range: null,
+
+	            // If true, navigation will be hidden
+	            disableNavigation: false,
+
+	            // If true, navigation will be in root container
+	            outsideNavigation: false,
+
+	            // Available locales: RU, EN, DE, FR, IT, POR, ESP
+	            locale: 'RU',
+
+	            // Minimum available date
+	            minimumDate: new Date(1970, 0, 1),
+
+	            // Maximum available date
+	            maximumDate: new Date(2100, 0, 1)
+	        },
+	        enumerable: true
+	    }]);
+
 	    function Datepicker(props) {
 	        _classCallCheck(this, Datepicker);
 
@@ -20707,12 +20968,10 @@
 	        };
 	    }
 
-	    _inherits(Datepicker, _React$Component2);
+	    // Setting up default state of calendar
 
 	    _createClass(Datepicker, [{
 	        key: 'componentWillMount',
-
-	        // Setting up default state of calendar
 	        value: function componentWillMount() {
 	            var TODAY = new Date();
 
@@ -20747,13 +21006,13 @@
 	                range: props.range || new _momentRange2['default'](props.minimumDate, props.maximumDate)
 	            });
 	        }
-	    }, {
-	        key: 'changeMonth',
 
 	        /**
 	         * Change month handler
 	         * @param {Number} direction - "1" or "-1"
 	         */
+	    }, {
+	        key: 'changeMonth',
 	        value: function changeMonth(direction) {
 	            var nextMonth = this.state.month + direction;
 	            var isMonthAvailable = nextMonth >= 0 && nextMonth <= 11;
@@ -20769,13 +21028,13 @@
 	                });
 	            }
 	        }
-	    }, {
-	        key: 'onClick',
 
 	        /**
 	         * Calendar state setter
 	         * @param  {Date} date - выбранная дата
 	         */
+	    }, {
+	        key: 'onClick',
 	        value: function onClick(date) {
 	            if (date) {
 	                this.setState({ date: date }, this.props.onClick(date));
@@ -20797,14 +21056,14 @@
 	                );
 	            });
 	        }
-	    }, {
-	        key: 'renderWeek',
 
 	        /**
 	         * Render week
 	         * @param  {Array} weekDays - array of instanceof Date
 	         * @return {Array} - array of Components
 	         */
+	    }, {
+	        key: 'renderWeek',
 	        value: function renderWeek(weekDays) {
 	            var _this2 = this;
 
@@ -20888,45 +21147,6 @@
 	                !this.props.disableNavigation && this.props.outsideNavigation ? this.renderNavigation() : ''
 	            );
 	        }
-	    }], [{
-	        key: 'propTypes',
-	        value: {
-	            onClick: _react2['default'].PropTypes.func,
-	            range: _react2['default'].PropTypes.instanceOf(_momentRange2['default']),
-	            disableNavigation: _react2['default'].PropTypes.bool,
-	            outsideNavigation: _react2['default'].PropTypes.bool,
-	            initialDate: _react2['default'].PropTypes.instanceOf(Date),
-	            locale: _react2['default'].PropTypes.string,
-	            minimumDate: _react2['default'].PropTypes.instanceOf(Date),
-	            maximumDate: _react2['default'].PropTypes.instanceOf(Date)
-	        },
-	        enumerable: true
-	    }, {
-	        key: 'defaultProps',
-	        value: {
-
-	            // Handler which will be execute when click on day
-	            onClick: DEFAULT_HANDLER,
-
-	            // Instance of DateRange
-	            range: null,
-
-	            // If true, navigation will be hidden
-	            disableNavigation: false,
-
-	            // If true, navigation will be in root container
-	            outsideNavigation: false,
-
-	            // Available locales: RU, EN, DE, FR, IT, POR, ESP
-	            locale: 'RU',
-
-	            // Minimum available date
-	            minimumDate: new Date(1970, 0, 1),
-
-	            // Maximum available date
-	            maximumDate: new Date(2100, 0, 1)
-	        },
-	        enumerable: true
 	    }]);
 
 	    return Datepicker;

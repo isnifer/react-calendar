@@ -21,6 +21,7 @@
     "gulp": "latest",
     "gulp-connect": "latest",
     "gulp-less": "latest",
+    "jsdom": "^6.1.0",
     "tap-spec": "^4.1.0",
     "tape": "^4.2.0",
     "webpack": "^1.11.0"

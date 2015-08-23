@@ -14,6 +14,44 @@ body {
 .demo__part {
   margin-bottom: 50px;
 }
+.demo__part:before,
+.demo__part:after {
+  display: table;
+  content: '';
+  width: 100%;
+}
+.demo__inline {
+  float: left;
+  margin-right: 20px;
+}
+.demo__description {
+  font-size: 18px;
+  line-height: 1.33333333;
+  color: #333;
+}
+.demo__ru,
+.demo__en {
+  position: relative;
+}
+.demo__ru:before,
+.demo__en:before {
+  content: 'RU';
+  display: block;
+  position: absolute;
+  color: red;
+  top: 3px;
+  left: -18px;
+  font-size: 10px;
+}
+.demo__ru {
+  margin-bottom: 10px;
+}
+.demo__en {
+  margin-bottom: 20px;
+}
+.demo__en:before {
+  content: 'EN';
+}
 .demo__title {
   margin-bottom: 5px;
 }
@@ -36,6 +74,14 @@ body {
   height: 40px;
   font-size: 25px;
   padding: 0 10px;
+}
+.demo__fork {
+  position: absolute;
+  display: block;
+  overflow: hidden;
+  top: 0;
+  right: 0;
+  border: 0;
 }
 .calendar {
   width: 300px;
@@ -107,9 +153,6 @@ body {
 }
 .calendar__day_available:hover {
   background: #AFB42B;
-}
-.calendar__day_selected {
-  background: #8BC34A;
 }
 .calendar__day_disabled {
   background: #455A64;

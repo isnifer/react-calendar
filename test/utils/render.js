@@ -1,7 +1,7 @@
 import React from 'react/addons';
 const TestUtils = React.addons.TestUtils;
 
-export default function (component, props, ...children) {
+function render (component, props, ...children) {
     const shallowRenderer = TestUtils.createRenderer();
 
     shallowRenderer.render(
@@ -14,3 +14,5 @@ export default function (component, props, ...children) {
 
     return shallowRenderer.getRenderOutput();
 }
+
+export default { render, TestUtils }

@@ -1,3 +1,12 @@
+.clearfix() {
+    &:before,
+    &:after {
+        display: table;
+        content: '';
+        width: 100%;
+    }
+}
+
 * {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -15,6 +24,45 @@ body {
 
     &__part {
         margin-bottom: 50px;
+        .clearfix();
+    }
+
+    &__inline {
+        float: left;
+        margin-right: 20px;
+    }
+
+    &__description {
+        font-size: 18px;
+        line-height: 24/18;
+        color: #333;
+    }
+
+    &__ru,
+    &__en {
+        position: relative;
+
+        &:before {
+            content: 'RU';
+            display: block;
+            position: absolute;
+            color: red;
+            top: 3px;
+            left: -18px;
+            font-size: 10px;
+        }
+    }
+
+    &__ru {
+        margin-bottom: 10px;
+    }
+
+    &__en {
+        margin-bottom: 20px;
+
+        &:before {
+            content: 'EN';
+        }
     }
 
     &__title {
@@ -42,6 +90,15 @@ body {
         height: 40px;
         font-size: 25px;
         padding: 0 10px;
+    }
+
+    &__fork {
+        position: absolute;
+        display: block;
+        overflow: hidden;
+        top: 0;
+        right: 0;
+        border: 0;
     }
 }
 

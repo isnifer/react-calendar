@@ -165,10 +165,17 @@ class Datepicker extends React.Component {
         this.setState(state);
     }
 
-    componentWillReceiveProps (props) {
-        this.setState({
-            range: props.range || new DateRange(props.minimumDate, props.maximumDate)
-        });
+    componentWillReceiveProps (nextProps) {
+        let range;
+
+        if (nextProps.range !== this.props.range) {
+            range = props.range
+        } else if (nextProps.minimumDate !== this.props.minimumDate &&
+                   nextProps.maximumDate !== this.props.maximumDate) {
+            range = new DateRange(nextProps.minimumDate, nextProps.maximumDate);
+        }
+
+        this.setState({range: range});
     }
 
     /**

@@ -12,7 +12,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var _react = require('react');
 
@@ -62,13 +62,13 @@ var calendar = new _calendar.Calendar(1);
 var DEFAULT_HANDLER = function DEFAULT_HANDLER() {};
 
 var WeekDay = (function (_React$Component) {
+    _inherits(WeekDay, _React$Component);
+
     function WeekDay() {
         _classCallCheck(this, WeekDay);
 
         _get(Object.getPrototypeOf(WeekDay.prototype), 'constructor', this).apply(this, arguments);
     }
-
-    _inherits(WeekDay, _React$Component);
 
     _createClass(WeekDay, [{
         key: 'inRange',
@@ -109,6 +109,49 @@ var WeekDay = (function (_React$Component) {
 })(_react2['default'].Component);
 
 var Datepicker = (function (_React$Component2) {
+    _inherits(Datepicker, _React$Component2);
+
+    _createClass(Datepicker, null, [{
+        key: 'propTypes',
+        value: {
+            onClick: _react2['default'].PropTypes.func,
+            range: _react2['default'].PropTypes.instanceOf(_momentRange2['default']),
+            disableNavigation: _react2['default'].PropTypes.bool,
+            outsideNavigation: _react2['default'].PropTypes.bool,
+            initialDate: _react2['default'].PropTypes.instanceOf(Date),
+            locale: _react2['default'].PropTypes.string,
+            minimumDate: _react2['default'].PropTypes.instanceOf(Date),
+            maximumDate: _react2['default'].PropTypes.instanceOf(Date)
+        },
+        enumerable: true
+    }, {
+        key: 'defaultProps',
+        value: {
+
+            // Handler which will be execute when click on day
+            onClick: DEFAULT_HANDLER,
+
+            // Instance of DateRange
+            range: null,
+
+            // If true, navigation will be hidden
+            disableNavigation: false,
+
+            // If true, navigation will be in root container
+            outsideNavigation: false,
+
+            // Available locales: RU, EN, DE, FR, IT, POR, ESP
+            locale: 'RU',
+
+            // Minimum available date
+            minimumDate: new Date(1970, 0, 1),
+
+            // Maximum available date
+            maximumDate: new Date(2100, 0, 1)
+        },
+        enumerable: true
+    }]);
+
     function Datepicker(props) {
         _classCallCheck(this, Datepicker);
 
@@ -122,12 +165,10 @@ var Datepicker = (function (_React$Component2) {
         };
     }
 
-    _inherits(Datepicker, _React$Component2);
+    // Setting up default state of calendar
 
     _createClass(Datepicker, [{
         key: 'componentWillMount',
-
-        // Setting up default state of calendar
         value: function componentWillMount() {
             var TODAY = new Date();
 
@@ -162,13 +203,13 @@ var Datepicker = (function (_React$Component2) {
                 range: props.range || new _momentRange2['default'](props.minimumDate, props.maximumDate)
             });
         }
-    }, {
-        key: 'changeMonth',
 
         /**
          * Change month handler
          * @param {Number} direction - "1" or "-1"
          */
+    }, {
+        key: 'changeMonth',
         value: function changeMonth(direction) {
             var nextMonth = this.state.month + direction;
             var isMonthAvailable = nextMonth >= 0 && nextMonth <= 11;
@@ -184,13 +225,13 @@ var Datepicker = (function (_React$Component2) {
                 });
             }
         }
-    }, {
-        key: 'onClick',
 
         /**
          * Calendar state setter
          * @param  {Date} date - выбранная дата
          */
+    }, {
+        key: 'onClick',
         value: function onClick(date) {
             if (date) {
                 this.setState({ date: date }, this.props.onClick(date));
@@ -212,14 +253,14 @@ var Datepicker = (function (_React$Component2) {
                 );
             });
         }
-    }, {
-        key: 'renderWeek',
 
         /**
          * Render week
          * @param  {Array} weekDays - array of instanceof Date
          * @return {Array} - array of Components
          */
+    }, {
+        key: 'renderWeek',
         value: function renderWeek(weekDays) {
             var _this2 = this;
 
@@ -303,45 +344,6 @@ var Datepicker = (function (_React$Component2) {
                 !this.props.disableNavigation && this.props.outsideNavigation ? this.renderNavigation() : ''
             );
         }
-    }], [{
-        key: 'propTypes',
-        value: {
-            onClick: _react2['default'].PropTypes.func,
-            range: _react2['default'].PropTypes.instanceOf(_momentRange2['default']),
-            disableNavigation: _react2['default'].PropTypes.bool,
-            outsideNavigation: _react2['default'].PropTypes.bool,
-            initialDate: _react2['default'].PropTypes.instanceOf(Date),
-            locale: _react2['default'].PropTypes.string,
-            minimumDate: _react2['default'].PropTypes.instanceOf(Date),
-            maximumDate: _react2['default'].PropTypes.instanceOf(Date)
-        },
-        enumerable: true
-    }, {
-        key: 'defaultProps',
-        value: {
-
-            // Handler which will be execute when click on day
-            onClick: DEFAULT_HANDLER,
-
-            // Instance of DateRange
-            range: null,
-
-            // If true, navigation will be hidden
-            disableNavigation: false,
-
-            // If true, navigation will be in root container
-            outsideNavigation: false,
-
-            // Available locales: RU, EN, DE, FR, IT, POR, ESP
-            locale: 'RU',
-
-            // Minimum available date
-            minimumDate: new Date(1970, 0, 1),
-
-            // Maximum available date
-            maximumDate: new Date(2100, 0, 1)
-        },
-        enumerable: true
     }]);
 
     return Datepicker;
