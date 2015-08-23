@@ -61,6 +61,15 @@ var WEEK_NAMES_SHORT = {
 var calendar = new _calendar.Calendar(1);
 var DEFAULT_HANDLER = function DEFAULT_HANDLER() {};
 
+/**
+ * Reset time of Date to 00:00:00
+ * @param  {Date} date
+ * @return {Date}
+ */
+function resetDate(date) {
+    return new Date(date.toString().replace(/\d{2}:\d{2}:\d{2}/, '00:00:00'));
+}
+
 var WeekDay = (function (_React$Component) {
     _inherits(WeekDay, _React$Component);
 
@@ -83,7 +92,8 @@ var WeekDay = (function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
-            var className = (0, _classnames2['default'])('calendar__day', { calendar__day_available: this.inRange() }, { calendar__day_disabled: !this.inRange() }, { calendar__day_current: this.props.current });
+            var inRange = this.inRange();
+            var className = (0, _classnames2['default'])('calendar__day', { calendar__day_available: inRange }, { calendar__day_disabled: !inRange }, { calendar__day_current: this.props.current });
             return _react2['default'].createElement(
                 'td',
                 { className: 'calendar__cell' },
@@ -176,7 +186,7 @@ var Datepicker = (function (_React$Component2) {
             // we will use it also for define month and year.
             // If not it will be TODAY
             var initialDate = this.props.initialDate || TODAY;
-            var initialRange = this.props.range || new _momentRange2['default'](this.props.minimumDate, this.props.maximumDate);
+            var initialRange = this.props.range || new _momentRange2['default'](resetDate(this.props.minimumDate), resetDate(this.props.maximumDate));
             var state = undefined;
 
             state = {
@@ -204,7 +214,7 @@ var Datepicker = (function (_React$Component2) {
             if (nextProps.range !== this.props.range) {
                 range = props.range;
             } else if (nextProps.minimumDate !== this.props.minimumDate && nextProps.maximumDate !== this.props.maximumDate) {
-                range = new _momentRange2['default'](nextProps.minimumDate, nextProps.maximumDate);
+                range = new _momentRange2['default'](resetDate(nextProps.minimumDate), resetDate(nextProps.maximumDate));
             }
 
             if (range) {

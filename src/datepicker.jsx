@@ -57,6 +57,15 @@ const WEEK_NAMES_SHORT = {
 let calendar = new Calendar(1);
 const DEFAULT_HANDLER = function () {};
 
+/**
+ * Reset time of Date to 00:00:00
+ * @param  {Date} date
+ * @return {Date}
+ */
+function resetDate (date) {
+    return new Date(date.toString().replace(/\d{2}:\d{2}:\d{2}/, '00:00:00'));
+}
+
 class WeekDay extends React.Component {
     static propTypes = {
         date: React.PropTypes.instanceOf(Date).isRequired,
@@ -74,10 +83,11 @@ class WeekDay extends React.Component {
     }
 
     render () {
-        var className = cn(
+        let inRange = this.inRange();
+        let className = cn(
             'calendar__day',
-            {calendar__day_available: this.inRange()},
-            {calendar__day_disabled: !this.inRange()},
+            {calendar__day_available: inRange},
+            {calendar__day_disabled: !inRange},
             {calendar__day_current: this.props.current}
         );
         return (
@@ -144,7 +154,8 @@ class Datepicker extends React.Component {
         // we will use it also for define month and year.
         // If not it will be TODAY
         let initialDate = this.props.initialDate || TODAY;
-        let initialRange = this.props.range || new DateRange(this.props.minimumDate, this.props.maximumDate);
+        let initialRange = this.props.range ||
+                           new DateRange(resetDate(this.props.minimumDate), resetDate(this.props.maximumDate));
         let state;
 
         state = {
@@ -172,7 +183,7 @@ class Datepicker extends React.Component {
             range = props.range
         } else if (nextProps.minimumDate !== this.props.minimumDate &&
                    nextProps.maximumDate !== this.props.maximumDate) {
-            range = new DateRange(nextProps.minimumDate, nextProps.maximumDate);
+            range = new DateRange(resetDate(nextProps.minimumDate), resetDate(nextProps.maximumDate));
         }
 
         if (range) {

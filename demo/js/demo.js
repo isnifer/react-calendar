@@ -76,7 +76,7 @@
 	    return [day, month, date.getFullYear()].join('.');
 	}
 
-	var leftRangeDate = new Date(2015, 7, 4);
+	var leftRangeDate = new Date();
 	var rightRangeDate = new Date(2015, 7, 27);
 
 	var Demo = (function (_React$Component) {
@@ -359,8 +359,9 @@
 	                            readOnly: true }),
 	                        _react2['default'].createElement(_buildIndexJs2['default'], {
 	                            onClick: this.onClickFour.bind(this),
-	                            range: new _momentRange2['default'](leftRangeDate, this.state.date5),
 	                            initialDate: leftRangeDate,
+	                            minimumDate: leftRangeDate,
+	                            maximumDate: this.state.date5,
 	                            locale: 'EN' }),
 	                        _react2['default'].createElement(
 	                            'div',
@@ -373,7 +374,7 @@
 	                            _react2['default'].createElement(
 	                                'pre',
 	                                { className: 'demo__code' },
-	                                '<input\n' + '  type="text"\n' + '  className="demo__input"\n' + '  value={transformDate(this.state.date4)}\n' + '  readOnly />\n' + '<Datepicker\n' + '  onClick={::this.onClickFour}\n' + '  range={new DateRange(leftRangeDate, this.state.date5)}\n' + '  initialDate={leftRangeDate}\n' + '  locale="EN" />'
+	                                '<input\n' + '  type="text"\n' + '  className="demo__input"\n' + '  value={transformDate(this.state.date4)}\n' + '  readOnly />\n' + '<Datepicker\n' + '  onClick={::this.onClickFour}\n' + '  initialDate={leftRangeDate}\n' + '  minimumDate={leftRangeDate}\n' + '  maximumDate={this.state.date5}\n' + '  locale="EN" />'
 	                            )
 	                        )
 	                    ),
@@ -387,8 +388,9 @@
 	                            readOnly: true }),
 	                        _react2['default'].createElement(_buildIndexJs2['default'], {
 	                            onClick: this.onClickFive.bind(this),
-	                            range: new _momentRange2['default'](this.state.date4, rightRangeDate),
 	                            initialDate: rightRangeDate,
+	                            minimumDate: this.state.date4,
+	                            maximumDate: rightRangeDate,
 	                            locale: 'EN' }),
 	                        _react2['default'].createElement(
 	                            'div',
@@ -401,7 +403,7 @@
 	                            _react2['default'].createElement(
 	                                'pre',
 	                                { className: 'demo__code' },
-	                                '<input\n' + '  type="text"\n' + '  className="demo__input"\n' + '  value={transformDate(this.state.date5)}\n' + '  readOnly />\n' + '<Datepicker\n' + '  onClick={::this.onClickFive}\n' + '  range={new DateRange(this.state.date4, rightRangeDate)}\n' + '  initialDate={rightRangeDate}\n' + '  locale="EN" />'
+	                                '<input\n' + '  type="text"\n' + '  className="demo__input"\n' + '  value={transformDate(this.state.date5)}\n' + '  readOnly />\n' + '<Datepicker\n' + '  onClick={::this.onClickFive}\n' + '  initialDate={rightRangeDate}\n' + '  minimumDate={this.state.date4}\n' + '  maximumDate={rightRangeDate}\n' + '  locale="EN" />'
 	                            )
 	                        )
 	                    )
@@ -20864,6 +20866,15 @@
 	var calendar = new _calendar.Calendar(1);
 	var DEFAULT_HANDLER = function DEFAULT_HANDLER() {};
 
+	/**
+	 * Reset time of Date to 00:00:00
+	 * @param  {Date} date
+	 * @return {Date}
+	 */
+	function resetDate(date) {
+	    return new Date(date.toString().replace(/\d{2}:\d{2}:\d{2}/, '00:00:00'));
+	}
+
 	var WeekDay = (function (_React$Component) {
 	    _inherits(WeekDay, _React$Component);
 
@@ -20886,7 +20897,8 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var className = (0, _classnames2['default'])('calendar__day', { calendar__day_available: this.inRange() }, { calendar__day_disabled: !this.inRange() }, { calendar__day_current: this.props.current });
+	            var inRange = this.inRange();
+	            var className = (0, _classnames2['default'])('calendar__day', { calendar__day_available: inRange }, { calendar__day_disabled: !inRange }, { calendar__day_current: this.props.current });
 	            return _react2['default'].createElement(
 	                'td',
 	                { className: 'calendar__cell' },
@@ -20979,7 +20991,7 @@
 	            // we will use it also for define month and year.
 	            // If not it will be TODAY
 	            var initialDate = this.props.initialDate || TODAY;
-	            var initialRange = this.props.range || new _momentRange2['default'](this.props.minimumDate, this.props.maximumDate);
+	            var initialRange = this.props.range || new _momentRange2['default'](resetDate(this.props.minimumDate), resetDate(this.props.maximumDate));
 	            var state = undefined;
 
 	            state = {
@@ -21007,7 +21019,7 @@
 	            if (nextProps.range !== this.props.range) {
 	                range = props.range;
 	            } else if (nextProps.minimumDate !== this.props.minimumDate && nextProps.maximumDate !== this.props.maximumDate) {
-	                range = new _momentRange2['default'](nextProps.minimumDate, nextProps.maximumDate);
+	                range = new _momentRange2['default'](resetDate(nextProps.minimumDate), resetDate(nextProps.maximumDate));
 	            }
 
 	            if (range) {
