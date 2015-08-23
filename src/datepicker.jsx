@@ -175,7 +175,9 @@ class Datepicker extends React.Component {
             range = new DateRange(nextProps.minimumDate, nextProps.maximumDate);
         }
 
-        this.setState({range: range});
+        if (range) {
+            this.setState({range: range});
+        }
     }
 
     /**

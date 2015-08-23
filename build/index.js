@@ -207,7 +207,9 @@ var Datepicker = (function (_React$Component2) {
                 range = new _momentRange2['default'](nextProps.minimumDate, nextProps.maximumDate);
             }
 
-            this.setState({ range: range });
+            if (range) {
+                this.setState({ range: range });
+            }
         }
 
         /**
