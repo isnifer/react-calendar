@@ -21017,7 +21017,7 @@
 	            var range = undefined;
 
 	            if (nextProps.range !== this.props.range) {
-	                range = props.range;
+	                range = nextProps.range;
 	            } else if (nextProps.minimumDate !== this.props.minimumDate && nextProps.maximumDate !== this.props.maximumDate) {
 	                range = new _momentRange2['default'](resetDate(nextProps.minimumDate), resetDate(nextProps.maximumDate));
 	            }

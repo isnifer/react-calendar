@@ -180,7 +180,7 @@ class Datepicker extends React.Component {
         let range;
 
         if (nextProps.range !== this.props.range) {
-            range = props.range
+            range = nextProps.range
         } else if (nextProps.minimumDate !== this.props.minimumDate &&
                    nextProps.maximumDate !== this.props.maximumDate) {
             range = new DateRange(resetDate(nextProps.minimumDate), resetDate(nextProps.maximumDate));
