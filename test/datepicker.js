@@ -38,68 +38,94 @@ test('Should have 3 elements: head, month, placeholder for nav', assert => {
     assert.end();
 });
 
-test('Two calendar\'s inited', assert => {
+test('Test componentWillReceiveProps', assert => {
     const leftRangeDate = new Date(2015, 7, 4);
     const rightRangeDate = new Date(2015, 7, 27);
 
-    let state = {
-        date1: leftRangeDate,
-        date2: rightRangeDate
-    };
+    const Parent = React.createClass({
+        getInitialState () {
+            return {
+                date1: leftRangeDate,
+                date2: rightRangeDate
+            };
+        },
 
-    let c1 = TestUtils.renderIntoDocument(
-        <Datepicker
-            minimumDate={leftRangeDate}
-            maximumDate={state.date2}
-            initialDate={leftRangeDate}
-            onClick={function (date) {
-                state.date1 = date;
-
-                c2 = TestUtils.renderIntoDocument(
+        render () {
+            return (
+                <div>
                     <Datepicker
-                        minimumDate={state.date1}
+                        ref="datepicker1"
+                        minimumDate={leftRangeDate}
+                        maximumDate={this.state.date2}
+                        initialDate={leftRangeDate}
+                        onClick={(date) => {
+                            this.setState({date1: date});
+                        }} />
+                    <Datepicker
+                        ref="datepicker2"
+                        minimumDate={this.state.date1}
                         maximumDate={rightRangeDate}
+                        initialDate={rightRangeDate}
+                        onClick={(date) => {
+                            this.setState({date2: date});
+                        }} />
+
+                    <Datepicker
+                        ref="datepicker3"
+                        range={new DateRange(leftRangeDate, this.state.date2)}
+                        initialDate={leftRangeDate} />
+                    <Datepicker
+                        ref="datepicker4"
+                        range={new DateRange(this.state.date1, rightRangeDate)}
                         initialDate={rightRangeDate} />
-                );
-            }} />
-    );
-    let c2 = TestUtils.renderIntoDocument(
-        <Datepicker
-            minimumDate={state.date1}
-            maximumDate={rightRangeDate}
-            initialDate={rightRangeDate}
-            onClick={function (date) {
-                state.date2 = date;
-            }} />
+                </div>
+            );
+        }
+    });
+
+    let parent = TestUtils.renderIntoDocument(
+        <Parent />
     );
 
-    let currentDay1 = TestUtils.findRenderedDOMComponentWithClass(c1, 'calendar__day_current');
-    let currentDay2 = TestUtils.findRenderedDOMComponentWithClass(c2, 'calendar__day_current');
+    let datePicker1 = parent.refs.datepicker1;
+    let datePicker2 = parent.refs.datepicker2;
+
+    let datePicker3 = parent.refs.datepicker3;
+    let datePicker4 = parent.refs.datepicker4;
+
+    let currentDay1 = TestUtils.findRenderedDOMComponentWithClass(datePicker1, 'calendar__day_current');
+    let currentDay2 = TestUtils.findRenderedDOMComponentWithClass(datePicker2, 'calendar__day_current');
 
     assert.equal(currentDay1.props.children, 4, 'Initial date is 4 August in first calendar');
     assert.equal(currentDay2.props.children, 27, 'Initial date is 5 August in second calendar');
 
     // 4 August
     assert.equal(
-        c2.state.range.start.toString(),
+        datePicker2.state.range.start.toString(),
         new DateRange(leftRangeDate, rightRangeDate).start.toString(),
         'Should set start of range 4 August'
     );
 
-    let nextAvialableDate = TestUtils.scryRenderedDOMComponentsWithClass(c1, 'calendar__day_available')[1];
+    let nextAvialableDate = TestUtils.scryRenderedDOMComponentsWithClass(datePicker1, 'calendar__day_available')[1];
     TestUtils.Simulate.click(nextAvialableDate);
 
     assert.equal(
         nextAvialableDate.props.children,
-        state.date1.getDate(),
+        parent.state.date1.getDate(),
         'Should set next available date - 5 August'
     );
 
     // 5 August
     assert.equal(
-        c2.state.range.start.toString(),
-        new DateRange(state.date1, rightRangeDate).start.toString(),
+        datePicker2.state.range.start.toString(),
+        new DateRange(parent.state.date1, rightRangeDate).start.toString(),
         'Should change start of range to 5 August'
+    );
+
+    assert.equal(
+        datePicker4.state.range.toString(),
+        new DateRange(parent.state.date1, rightRangeDate).toString(),
+        'New range for second calendar should start from August 5'
     );
 
     assert.end();
