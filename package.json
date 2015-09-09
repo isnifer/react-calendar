@@ -22,6 +22,7 @@
     "gulp": "latest",
     "gulp-connect": "latest",
     "gulp-less": "latest",
+    "isparta": "^3.0.4",
     "istanbul": "^0.3.19",
     "jsdom": "^6.1.0",
     "rimraf": "^2.4.3",
