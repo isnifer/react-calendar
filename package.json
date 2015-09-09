@@ -18,10 +18,13 @@
     "babel": "^5.8.21",
     "babel-core": "^5.8.22",
     "babel-loader": "^5.3.2",
+    "coveralls": "^2.11.4",
     "gulp": "latest",
     "gulp-connect": "latest",
     "gulp-less": "latest",
+    "istanbul": "^0.3.19",
     "jsdom": "^6.1.0",
+    "rimraf": "^2.4.3",
     "tap-spec": "^4.1.0",
     "tape": "^4.2.0",
     "webpack": "^1.11.0"
@@ -38,7 +41,9 @@
     "build": "babel src -o build/index.js",
     "demo": "webpack demo/jsx/demo.jsx demo/js/demo.js --module-bind 'jsx=babel?stage=0' -w",
     "test": "babel-node test/datepicker.js | tap-spec",
-    "travis": "npm run test",
-    "prepublish": "npm run build"
+    "travis": "npm run coveralls",
+    "prepublish": "npm run build",
+    "coverage": "babel-node node_modules/.bin/isparta cover --report lcovonly test/datepicker.js | tap-spec",
+    "coveralls": "npm run coverage && coveralls < coverage/lcov.info && rimraf ./coverage"
   }
 }

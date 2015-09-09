@@ -1,7 +1,7 @@
 import test from 'tape';
 import React from 'react';
 import { render, TestUtils } from './utils/render';
-import Datepicker from '../src/datepicker';
+import Datepicker from '../build';
 import './utils/jsdom';
 import DateRange from 'moment-range';
 
@@ -58,7 +58,8 @@ test('Two calendar\'s inited', assert => {
                 c2 = TestUtils.renderIntoDocument(
                     <Datepicker
                         minimumDate={state.date1}
-                        maximumDate={rightRangeDate} />
+                        maximumDate={rightRangeDate}
+                        initialDate={rightRangeDate} />
                 );
             }} />
     );
