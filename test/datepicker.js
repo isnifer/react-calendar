@@ -1,8 +1,8 @@
+import './utils/jsdom';
 import test from 'tape';
 import React from 'react';
 import { render, TestUtils } from './utils/render';
 import Datepicker from '../build';
-import './utils/jsdom';
 import DateRange from 'moment-range';
 
 const c = render(Datepicker);
@@ -125,6 +125,33 @@ test('Date is not part of Range', assert => {
                 initialDate={new Date(2015, 7, 21)} />
         )
     }, null, 'Should throws an exception');
+
+    assert.end();
+});
+
+test('Change Month Action', assert => {
+    const currentMonth = 8;
+    let c = TestUtils.renderIntoDocument(
+        <Datepicker
+            initialDate={new Date(2015, currentMonth, 1)} />
+    );
+
+    let currentDay = TestUtils.scryRenderedDOMComponentsWithClass(c, 'calendar__day_current')[0];
+    let prevMonthButton = TestUtils.scryRenderedDOMComponentsWithClass(c, 'calendar__arrow_left')[0];
+    let nextMonthButton = TestUtils.scryRenderedDOMComponentsWithClass(c, 'calendar__arrow_right')[0];
+
+    assert.equal(currentDay.props.children, 1, 'Should be first of september');
+    assert.equal(prevMonthButton.props.children, '<<', 'Should be left change month button');
+    assert.equal(nextMonthButton.props.children, '>>', 'Should be right change month button');
+
+    assert.equal(c.state.month, currentMonth, 'Should me September');
+
+    TestUtils.Simulate.click(nextMonthButton);
+    assert.equal(c.state.month, currentMonth + 1, 'Should me October');
+
+    TestUtils.Simulate.click(prevMonthButton);
+    TestUtils.Simulate.click(prevMonthButton);
+    assert.equal(c.state.month, currentMonth - 1, 'Should me August');
 
     assert.end();
 });
