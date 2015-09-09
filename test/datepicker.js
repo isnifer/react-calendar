@@ -131,9 +131,10 @@ test('Date is not part of Range', assert => {
 
 test('Change Month Action', assert => {
     const currentMonth = 8;
+    const currentYear = 2015;
     let c = TestUtils.renderIntoDocument(
         <Datepicker
-            initialDate={new Date(2015, currentMonth, 1)} />
+            initialDate={new Date(currentYear, currentMonth, 1)} />
     );
 
     let currentDay = TestUtils.scryRenderedDOMComponentsWithClass(c, 'calendar__day_current')[0];
@@ -144,14 +145,20 @@ test('Change Month Action', assert => {
     assert.equal(prevMonthButton.props.children, '<<', 'Should be left change month button');
     assert.equal(nextMonthButton.props.children, '>>', 'Should be right change month button');
 
-    assert.equal(c.state.month, currentMonth, 'Should me September');
+    assert.equal(c.state.month, currentMonth, 'Should be September');
+
+    TestUtils.Simulate.click(prevMonthButton);
+    assert.equal(c.state.month, currentMonth - 1, 'Should be August');
 
     TestUtils.Simulate.click(nextMonthButton);
-    assert.equal(c.state.month, currentMonth + 1, 'Should me October');
+    TestUtils.Simulate.click(nextMonthButton);
+    assert.equal(c.state.month, currentMonth + 1, 'Should be October');
 
-    TestUtils.Simulate.click(prevMonthButton);
-    TestUtils.Simulate.click(prevMonthButton);
-    assert.equal(c.state.month, currentMonth - 1, 'Should me August');
+    TestUtils.Simulate.click(nextMonthButton);
+    TestUtils.Simulate.click(nextMonthButton);
+    TestUtils.Simulate.click(nextMonthButton);
+    assert.equal(c.state.month, 0, 'Should be January');
+    assert.equal(c.state.year, currentYear + 1, 'Should be 2016');
 
     assert.end();
 });
