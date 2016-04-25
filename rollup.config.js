@@ -14,7 +14,9 @@ module.exports = {
     moduleName: 'react-date-range-picker',
     plugins: [
         babel({
-            exclude: "node_modules/**"
+            babelrc: false,
+            presets: ['es2015-rollup', 'react'],
+            exclude: 'node_modules/**'
         }),
         npm({
             jsnext: true,

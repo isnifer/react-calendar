@@ -3,7 +3,7 @@ import test from 'tape';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import render from './utils/render';
-import Datepicker from '../build/bundle';
+import Datepicker from '../build/';
 import DateRange from 'moment-range';
 
 const c = render(Datepicker);
