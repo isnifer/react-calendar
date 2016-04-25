@@ -1,8 +1,9 @@
 import './utils/jsdom';
 import test from 'tape';
 import React from 'react';
-import { render, TestUtils } from './utils/render';
-import Datepicker from '../build';
+import TestUtils from 'react-addons-test-utils';
+import render from './utils/render';
+import Datepicker from '../build/bundle';
 import DateRange from 'moment-range';
 
 const c = render(Datepicker);
@@ -83,18 +84,23 @@ test('Test componentWillReceiveProps', assert => {
         }
     });
 
-    let parent = TestUtils.renderIntoDocument(
+    const parent = TestUtils.renderIntoDocument(
         <Parent />
     );
 
-    let datePicker1 = parent.refs.datepicker1;
-    let datePicker2 = parent.refs.datepicker2;
+    const datePicker1 = parent.refs.datepicker1;
+    const datePicker2 = parent.refs.datepicker2;
 
-    let datePicker3 = parent.refs.datepicker3;
-    let datePicker4 = parent.refs.datepicker4;
+    const datePicker3 = parent.refs.datepicker3;
+    const datePicker4 = parent.refs.datepicker4;
 
     let currentDay1 = TestUtils.findRenderedDOMComponentWithClass(datePicker1, 'calendar__day_current');
+    // TEMP HACK
+    currentDay1 = currentDay1[Object.keys(currentDay1)[0]]._currentElement;
+
     let currentDay2 = TestUtils.findRenderedDOMComponentWithClass(datePicker2, 'calendar__day_current');
+    // TEMP HACK
+    currentDay2 = currentDay2[Object.keys(currentDay2)[0]]._currentElement;
 
     assert.equal(currentDay1.props.children, 4, 'Initial date is 4 August in first calendar');
     assert.equal(currentDay2.props.children, 27, 'Initial date is 5 August in second calendar');
@@ -108,6 +114,8 @@ test('Test componentWillReceiveProps', assert => {
 
     let nextAvialableDate = TestUtils.scryRenderedDOMComponentsWithClass(datePicker1, 'calendar__day_available')[1];
     TestUtils.Simulate.click(nextAvialableDate);
+    // TEMP HACK
+    nextAvialableDate = nextAvialableDate[Object.keys(nextAvialableDate)[0]]._currentElement;
 
     assert.equal(
         nextAvialableDate.props.children,
@@ -159,13 +167,21 @@ test('Change Month Action', assert => {
     const currentMonth = 8;
     const currentYear = 2015;
     let c = TestUtils.renderIntoDocument(
-        <Datepicker
-            initialDate={new Date(currentYear, currentMonth, 1)} />
+        <Datepicker initialDate={new Date(currentYear, currentMonth, 1)} />
     );
 
+
     let currentDay = TestUtils.scryRenderedDOMComponentsWithClass(c, 'calendar__day_current')[0];
-    let prevMonthButton = TestUtils.scryRenderedDOMComponentsWithClass(c, 'calendar__arrow_left')[0];
-    let nextMonthButton = TestUtils.scryRenderedDOMComponentsWithClass(c, 'calendar__arrow_right')[0];
+    // TEMP HACK
+    currentDay = currentDay[Object.keys(currentDay)[0]]._currentElement
+
+    const prevMonthButtonInstance = TestUtils.scryRenderedDOMComponentsWithClass(c, 'calendar__arrow_left')[0];
+    // TEMP HACK
+    const prevMonthButton = prevMonthButtonInstance[Object.keys(prevMonthButtonInstance)[0]]._currentElement;
+
+    const nextMonthButtonInstance = TestUtils.scryRenderedDOMComponentsWithClass(c, 'calendar__arrow_right')[0];
+    // TEMP HACK
+    const nextMonthButton = nextMonthButtonInstance[Object.keys(nextMonthButtonInstance)[0]]._currentElement;
 
     assert.equal(currentDay.props.children, 1, 'Should be first of september');
     assert.equal(prevMonthButton.props.children, '<<', 'Should be left change month button');
@@ -173,16 +189,16 @@ test('Change Month Action', assert => {
 
     assert.equal(c.state.month, currentMonth, 'Should be September');
 
-    TestUtils.Simulate.click(prevMonthButton);
+    TestUtils.Simulate.click(prevMonthButtonInstance);
     assert.equal(c.state.month, currentMonth - 1, 'Should be August');
 
-    TestUtils.Simulate.click(nextMonthButton);
-    TestUtils.Simulate.click(nextMonthButton);
+    TestUtils.Simulate.click(nextMonthButtonInstance);
+    TestUtils.Simulate.click(nextMonthButtonInstance);
     assert.equal(c.state.month, currentMonth + 1, 'Should be October');
 
-    TestUtils.Simulate.click(nextMonthButton);
-    TestUtils.Simulate.click(nextMonthButton);
-    TestUtils.Simulate.click(nextMonthButton);
+    TestUtils.Simulate.click(nextMonthButtonInstance);
+    TestUtils.Simulate.click(nextMonthButtonInstance);
+    TestUtils.Simulate.click(nextMonthButtonInstance);
     assert.equal(c.state.month, 0, 'Should be January');
     assert.equal(c.state.year, currentYear + 1, 'Should be 2016');
 

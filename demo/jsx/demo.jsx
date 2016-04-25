@@ -1,5 +1,6 @@
 import React from 'react';
-import Datepicker from '../../build/index.js';
+import { render } from 'react-dom';
+import Datepicker from '../../build/';
 import DateRange from 'moment-range';
 
 function transformDate (date) {
@@ -24,6 +25,12 @@ class Demo extends React.Component {
             date4: leftRangeDate,
             date5: rightRangeDate
         };
+
+        this.onClick = this.onClick.bind(this);
+        this.onClickTwo = this.onClickTwo.bind(this);
+        this.onClickThree = this.onClickThree.bind(this);
+        this.onClickFour = this.onClickFour.bind(this);
+        this.onClickFive = this.onClickFive.bind(this);
     }
 
     onClick (date) {
@@ -67,10 +74,10 @@ class Demo extends React.Component {
                         className="demo__input"
                         value={this.state.date1}
                         readOnly />
-                    <Datepicker onClick={::this.onClick} />
+                    <Datepicker onClick={this.onClick} />
                     <div className="demo__props">
                         <div className="demo__title">Source</div>
-                        <pre className="demo__code">{'<Datepicker onClick={::this.onClick} />'}</pre>
+                        <pre className="demo__code">{'<Datepicker onClick={this.onClick} />'}</pre>
                     </div>
                 </div>
                 <div className="demo__part">
@@ -106,7 +113,7 @@ class Demo extends React.Component {
                             value={this.state.date2}
                             readOnly />
                         <Datepicker
-                            onClick={::this.onClickTwo}
+                            onClick={this.onClickTwo}
                             range={new DateRange(new Date(2015, 7, 1), new Date(2015, 7, 16))}
                             initialDate={new Date(2015, 7, 8)}
                             locale="EN" />
@@ -114,7 +121,7 @@ class Demo extends React.Component {
                             <div className="demo__title">Source</div>
                             <pre className="demo__code">
                                 {'<Datepicker\n' +
-                                 '  onClick={::this.onClickTwo}\n' +
+                                 '  onClick={this.onClickTwo}\n' +
                                  '  range={new DateRange(new Date(2015, 7, 1), new Date(2015, 7, 16))}\n' +
                                  '  initialDate={new Date(2015, 7, 8)}\n' +
                                  '  locale="EN" />'}
@@ -129,7 +136,7 @@ class Demo extends React.Component {
                             value={this.state.date3}
                             readOnly />
                         <Datepicker
-                            onClick={::this.onClickThree}
+                            onClick={this.onClickThree}
                             range={new DateRange(new Date(2015, 7, 4), new Date(2015, 8, 3))}
                             initialDate={new Date(2015, 7, 12)}
                             locale="DE" />
@@ -137,7 +144,7 @@ class Demo extends React.Component {
                             <div className="demo__title">Source</div>
                             <pre className="demo__code">
                                 {'<Datepicker\n' +
-                                 '  onClick={::this.onClickThree}\n' +
+                                 '  onClick={this.onClickThree}\n' +
                                  '  range={new DateRange(new Date(2011, 7, 3), new Date(2011, 8, 3))}\n' +
                                  '  initialDate={new Date(2011, 7, 12)}\n' +
                                  '  locale="DE" />'}
@@ -173,7 +180,7 @@ class Demo extends React.Component {
                             value={transformDate(this.state.date4)}
                             readOnly />
                         <Datepicker
-                            onClick={::this.onClickFour}
+                            onClick={this.onClickFour}
                             initialDate={leftRangeDate}
                             minimumDate={leftRangeDate}
                             maximumDate={this.state.date5}
@@ -187,7 +194,7 @@ class Demo extends React.Component {
                                  '  value={transformDate(this.state.date4)}\n' +
                                  '  readOnly />\n' +
                                  '<Datepicker\n' +
-                                 '  onClick={::this.onClickFour}\n' +
+                                 '  onClick={this.onClickFour}\n' +
                                  '  initialDate={leftRangeDate}\n' +
                                  '  minimumDate={leftRangeDate}\n' +
                                  '  maximumDate={this.state.date5}\n' +
@@ -202,7 +209,7 @@ class Demo extends React.Component {
                             value={transformDate(this.state.date5)}
                             readOnly />
                         <Datepicker
-                            onClick={::this.onClickFive}
+                            onClick={this.onClickFive}
                             initialDate={rightRangeDate}
                             minimumDate={this.state.date4}
                             maximumDate={rightRangeDate}
@@ -216,7 +223,7 @@ class Demo extends React.Component {
                                  '  value={transformDate(this.state.date5)}\n' +
                                  '  readOnly />\n' +
                                  '<Datepicker\n' +
-                                 '  onClick={::this.onClickFive}\n' +
+                                 '  onClick={this.onClickFive}\n' +
                                  '  initialDate={rightRangeDate}\n' +
                                  '  minimumDate={this.state.date4}\n' +
                                  '  maximumDate={rightRangeDate}\n' +
@@ -235,4 +242,4 @@ class Demo extends React.Component {
     }
 }
 
-React.render(<Demo />, document.querySelector('.datepicker'));
+render(<Demo />, document.querySelector('.datepicker'));

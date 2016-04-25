@@ -3,59 +3,11 @@ import DateRange from 'moment-range';
 import { Calendar } from 'calendar';
 import cn from 'classnames';
 
-const MONTH_NAMES = {
-    RU: [
-        'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
-        'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
-    ],
-    EN: [
-        'January', 'February', 'March', 'April', 'May', 'June',
-        'July', 'August', 'September', 'October', 'November', 'December'
-    ],
-    DE: [
-        'Januari', 'Februari', 'March', 'April', 'Kan', 'June',
-        'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'
-    ],
-    FR: [
-        'Janvier', 'Février', 'Mars', 'Avril', 'Peut', 'Juin',
-        'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'
-    ],
-    ITA: [
-        'Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giu',
-        'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'
-    ],
-    POR: [
-        'Janeiro', 'Fevereiro', 'Março', 'April', 'Maio', 'Junho',
-        'Julho', 'Agosto', 'Setembro', 'Outubro', 'November', 'Dezembro'
-    ],
-    ESP: [
-        'Enero', 'Febrero', 'Marzo', 'Abril', 'Puede', 'Junio',
-        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
-    ]
-};
-
-const WEEK_NAMES = {
-    RU: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
-    EN: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-    DE: ['So.', 'Mo.', 'Di.', 'Mi.', 'Do.', 'Fr.', 'Sa.'],
-    FR: ['dim.', 'lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.'],
-    IT: ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'],
-    POR: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
-    ESP: ['Dom.', 'Lun.', 'Mar.', 'Mié.', 'Jue.', 'Vie.', 'Sáb.']
-};
-
-const WEEK_NAMES_SHORT = {
-    RU: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
-    EN: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
-    DE: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
-    FR: ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'],
-    IT: ['D', 'L', 'Ma', 'Me', 'G', 'V', 'S'],
-    POR: ['Dom', '2ª', '3ª', '4ª', '5ª', '6ª', 'Sáb'],
-    ESP: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá']
-};
+import WeekDay from './WeekDay.jsx';
+import { MONTH_NAMES, WEEK_NAMES, WEEK_NAMES_SHORT } from './locale';
 
 let calendar = new Calendar(1);
-const DEFAULT_HANDLER = function () {};
+const noop = function () {};
 
 /**
  * Reset time of Date to 00:00:00
@@ -66,75 +18,7 @@ function resetDate (date) {
     return new Date(date.toString().replace(/\d{2}:\d{2}:\d{2}/, '00:00:00'));
 }
 
-class WeekDay extends React.Component {
-    static propTypes = {
-        date: React.PropTypes.instanceOf(Date).isRequired,
-        range: React.PropTypes.object.isRequired,
-        key: React.PropTypes.number,
-        onClick: React.PropTypes.func.isRequired
-    }
-
-    inRange () {
-        return this.props.range.contains(this.props.date);
-    }
-
-    onClick (e) {
-        return ::this.inRange() ? this.props.onClick(this.props.date) : e.preventDefault();
-    }
-
-    render () {
-        let inRange = this.inRange();
-        let className = cn(
-            'calendar__day',
-            {calendar__day_available: inRange},
-            {calendar__day_disabled: !inRange},
-            {calendar__day_current: this.props.current}
-        );
-        return (
-            <td className="calendar__cell">
-                <span className={className} onClick={::this.onClick}>{this.props.date.getDate()}</span>
-            </td>
-        );
-    }
-}
-
 class Datepicker extends React.Component {
-
-    static propTypes = {
-        onClick: React.PropTypes.func,
-        range: React.PropTypes.instanceOf(DateRange),
-        disableNavigation: React.PropTypes.bool,
-        outsideNavigation: React.PropTypes.bool,
-        initialDate: React.PropTypes.instanceOf(Date),
-        locale: React.PropTypes.string,
-        minimumDate: React.PropTypes.instanceOf(Date),
-        maximumDate: React.PropTypes.instanceOf(Date),
-    }
-
-    static defaultProps = {
-
-        // Handler which will be execute when click on day
-        onClick: DEFAULT_HANDLER,
-
-        // Instance of DateRange
-        range: null,
-
-        // If true, navigation will be hidden
-        disableNavigation: false,
-
-        // If true, navigation will be in root container
-        outsideNavigation: false,
-
-        // Available locales: RU, EN, DE, FR, IT, POR, ESP
-        locale: 'RU',
-
-        // Minimum available date
-        minimumDate: new Date(1970, 0, 1),
-
-        // Maximum available date
-        maximumDate: new Date(2100, 0, 1)
-    }
-
     constructor (props) {
         super(props);
 
@@ -144,6 +28,9 @@ class Datepicker extends React.Component {
             range: null,
             year: null
         };
+
+        this.onClick = this.onClick.bind(this);
+        this.changeMonth = this.changeMonth.bind(this);
     }
 
     // Setting up default state of calendar
@@ -153,12 +40,10 @@ class Datepicker extends React.Component {
         // If we have defined 'initialDate' prop
         // we will use it also for define month and year.
         // If not it will be TODAY
-        let initialDate = this.props.initialDate || TODAY;
-        let initialRange = this.props.range ||
-                           new DateRange(resetDate(this.props.minimumDate), resetDate(this.props.maximumDate));
-        let state;
-
-        state = {
+        const initialDate = this.props.initialDate || TODAY;
+        const initialRange =
+            this.props.range || new DateRange(resetDate(this.props.minimumDate), resetDate(this.props.maximumDate));
+        const state = {
             date: initialDate,
             month: initialDate.getMonth(),
             year: initialDate.getFullYear()
@@ -187,7 +72,7 @@ class Datepicker extends React.Component {
         }
 
         if (range) {
-            this.setState({range: range});
+            this.setState({range});
         }
     }
 
@@ -196,19 +81,20 @@ class Datepicker extends React.Component {
      * @param {Number} direction - "1" or "-1"
      */
     changeMonth (direction) {
-        var nextMonth = this.state.month + direction;
-        var isMonthAvailable = nextMonth >= 0 && nextMonth <= 11;
+        const nextMonth = this.state.month + direction;
+        const isMonthAvailable = nextMonth >= 0 && nextMonth <= 11;
 
+        let model;
         if (!isMonthAvailable) {
-            this.setState({
+            model = {
                 month: direction === 1 ? 0 : 11,
                 year: this.state.year + direction
-            });
+            };
         } else {
-            this.setState({
-                month: this.state.month + direction,
-            });
+            model = {month: this.state.month + direction};
         }
+
+        this.setState(model);
     }
 
     /**
@@ -217,7 +103,7 @@ class Datepicker extends React.Component {
      */
     onClick (date) {
         if (date) {
-            this.setState({date: date}, this.props.onClick(date));
+            this.setState({date}, this.props.onClick(date));
         }
     }
 
@@ -245,7 +131,7 @@ class Datepicker extends React.Component {
                     date={day}
                     range={this.state.range}
                     current={isCurrent}
-                    onClick={::this.onClick} />
+                    onClick={this.onClick} />
             );
         });
     }
@@ -297,5 +183,39 @@ class Datepicker extends React.Component {
         );
     }
 }
+
+Datepicker.propTypes = {
+    onClick: React.PropTypes.func,
+    range: React.PropTypes.instanceOf(DateRange),
+    disableNavigation: React.PropTypes.bool,
+    outsideNavigation: React.PropTypes.bool,
+    initialDate: React.PropTypes.instanceOf(Date),
+    locale: React.PropTypes.string,
+    minimumDate: React.PropTypes.instanceOf(Date),
+    maximumDate: React.PropTypes.instanceOf(Date),
+};
+
+Datepicker.defaultProps = {
+    // Handler which will be execute when click on day
+    onClick: noop,
+
+    // Instance of DateRange
+    range: null,
+
+    // If true, navigation will be hidden
+    disableNavigation: false,
+
+    // If true, navigation will be in root container
+    outsideNavigation: false,
+
+    // Available locales: RU, EN, DE, FR, IT, POR, ESP
+    locale: 'RU',
+
+    // Minimum available date
+    minimumDate: new Date(1970, 0, 1),
+
+    // Maximum available date
+    maximumDate: new Date(2100, 0, 1)
+};
 
 export default Datepicker;
