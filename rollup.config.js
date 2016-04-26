@@ -1,6 +1,6 @@
 const babel = require('rollup-plugin-babel');
 const commonjs = require('rollup-plugin-commonjs');
-const npm = require('rollup-plugin-npm');
+const npm = require('rollup-plugin-node-resolve');
 const uglify = require('rollup-plugin-uglify');
 
 module.exports = {
