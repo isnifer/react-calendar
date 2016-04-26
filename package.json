@@ -63,7 +63,7 @@
     "test": "./node_modules/.bin/babel-node test/datepicker.js | tap-spec",
     "travis": "npm run coveralls",
     "prepublish": "npm run build",
-    "coverage": "./node_modules/.bin/babel-node ./node_modules/.bin/istanbul cover --dir test/coverage test/datepicker.js",
+    "coverage": "./node_modules/.bin/babel-node ./node_modules/.bin/istanbul cover --dir coverage test/datepicker.js",
     "coveralls": "npm run coverage && ./node_modules/.bin/coveralls < coverage/lcov.info && ./node_modules/.bin/rimraf ./coverage"
   }
 }
