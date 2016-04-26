@@ -127,9 +127,6 @@ var WEEK_NAMES = {
     ESP: ['Dom.', 'Lun.', 'Mar.', 'Mié.', 'Jue.', 'Vie.', 'Sáb.']
 };
 
-var calendar$1 = new calendar.Calendar(1);
-var noop = function noop() {};
-
 /**
  * Reset time of Date to 00:00:00
  * @param  {Date} date
@@ -153,6 +150,8 @@ var Datepicker = function (_React$Component) {
             range: null,
             year: null
         };
+
+        _this.calendar = new calendar.Calendar(props.locale === 'RU' ? 1 : 0);
 
         _this.onClick = _this.onClick.bind(_this);
         _this.changeMonth = _this.changeMonth.bind(_this);
@@ -248,7 +247,7 @@ var Datepicker = function (_React$Component) {
 
             // Array of weeks, which contains arrays of days
             // [[Date, Date, ...], [Date, Date, ...], ...]
-            var month = calendar$1.monthDates(this.state.year, this.state.month);
+            var month = this.calendar.monthDates(this.state.year, this.state.month);
             return month.map(function (week, i) {
                 return React.createElement(
                     'tr',
@@ -366,7 +365,7 @@ Datepicker.propTypes = {
 
 Datepicker.defaultProps = {
     // Handler which will be execute when click on day
-    onClick: noop,
+    onClick: function onClick() {},
 
     // Instance of DateRange
     range: null,
@@ -378,7 +377,7 @@ Datepicker.defaultProps = {
     outsideNavigation: false,
 
     // Available locales: RU, EN, DE, FR, IT, POR, ESP
-    locale: 'RU',
+    locale: 'EN',
 
     // Minimum available date
     minimumDate: new Date(1970, 0, 1),

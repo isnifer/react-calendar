@@ -6,9 +6,6 @@ import cn from 'classnames';
 import WeekDay from './WeekDay.jsx';
 import { MONTH_NAMES, WEEK_NAMES, WEEK_NAMES_SHORT } from './locale';
 
-let calendar = new Calendar(1);
-const noop = function () {};
-
 /**
  * Reset time of Date to 00:00:00
  * @param  {Date} date
@@ -28,6 +25,8 @@ class Datepicker extends React.Component {
             range: null,
             year: null
         };
+
+        this.calendar = new Calendar(props.locale === 'RU' ? 1 : 0);
 
         this.onClick = this.onClick.bind(this);
         this.changeMonth = this.changeMonth.bind(this);
@@ -111,7 +110,7 @@ class Datepicker extends React.Component {
 
         // Array of weeks, which contains arrays of days
         // [[Date, Date, ...], [Date, Date, ...], ...]
-        var month = calendar.monthDates(this.state.year, this.state.month);
+        var month = this.calendar.monthDates(this.state.year, this.state.month);
         return month.map((week, i) => {
             return <tr className="calendar__week" key={i}>{this.renderWeek(week)}</tr>;
         });
@@ -197,7 +196,7 @@ Datepicker.propTypes = {
 
 Datepicker.defaultProps = {
     // Handler which will be execute when click on day
-    onClick: noop,
+    onClick: function () {},
 
     // Instance of DateRange
     range: null,
@@ -209,7 +208,7 @@ Datepicker.defaultProps = {
     outsideNavigation: false,
 
     // Available locales: RU, EN, DE, FR, IT, POR, ESP
-    locale: 'RU',
+    locale: 'EN',
 
     // Minimum available date
     minimumDate: new Date(1970, 0, 1),
