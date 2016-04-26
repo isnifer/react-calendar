@@ -29,6 +29,7 @@
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-1": "^6.5.0",
     "coveralls": "^2.11.4",
+    "enzyme": "^2.2.0",
     "gulp": "latest",
     "gulp-connect": "latest",
     "gulp-less": "latest",
