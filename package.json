@@ -32,7 +32,7 @@
     "gulp": "latest",
     "gulp-connect": "latest",
     "gulp-less": "latest",
-    "istanbul": "^0.4.3",
+    "istanbul": "^1.0.0-alpha.2",
     "jsdom": "^8.4.0",
     "moment": "^2.13.0",
     "react": "^15.0.1",
@@ -56,14 +56,14 @@
   },
   "main": "build/index.js",
   "scripts": {
-    "watch": "rollup -c -w",
-    "build": "rollup -c",
+    "watch": "./node_modules/.bin/rollup -c -w",
+    "build": "./node_modules/.bin/rollup -c",
     "demo": "./node_modules/.bin/webpack",
     "demo-server": "./node_modules/.bin/webpack-dev-server",
-    "test": "babel-node test/datepicker.js | tap-spec",
-    "travis": "npm run test",
+    "test": "./node_modules/.bin/babel-node test/datepicker.js | tap-spec",
+    "travis": "npm run coveralls",
     "prepublish": "npm run build",
-    "coverage": "./node_modules/.bin/babel-node ./node_modules/.bin/istanbul cover test/datepicker.js | tap-spec",
-    "coveralls": "npm run coverage && coveralls < coverage/lcov.info && rimraf ./coverage"
+    "coverage": "./node_modules/.bin/babel-node ./node_modules/.bin/istanbul cover --dir test/coverage test/datepicker.js",
+    "coveralls": "npm run coverage && ./node_modules/.bin/coveralls < coverage/lcov.info && ./node_modules/.bin/rimraf ./coverage"
   }
 }
