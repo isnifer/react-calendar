@@ -235,18 +235,16 @@ class Datepicker extends React.Component {
                 </div>
 
                 {this.state.dateVisible &&
-                    <div>
-                        <table className="calendar__month">
-                            <thead>
-                                <tr className="calendar__week-names">
-                                    {this.renderWeekdayNames()}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {this.renderMonth()}
-                            </tbody>
-                        </table>
-                    </div>
+                    <table className="calendar__month">
+                        <thead>
+                            <tr className="calendar__week-names">
+                                {this.renderWeekdayNames()}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.renderMonth()}
+                        </tbody>
+                    </table>
                 }
 
                 {this.state.monthVisible &&

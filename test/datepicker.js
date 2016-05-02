@@ -24,9 +24,9 @@ test('Calendar inited', assert => {
 });
 
 test('Should have 3 elements: head, month, placeholder for nav', assert => {
-    let children = c.props.children;
+    const children = c.props.children;
 
-    assert.equal(children.length, 3, 'Count of children is 3');
+    assert.equal(children.length, 4, 'Count of children is 4');
 
     assert.equal(children[0].type, 'div', 'Head should be a div');
     assert.equal(children[0].props.className, 'calendar__head', 'And should have className calendar__head');
@@ -34,7 +34,8 @@ test('Should have 3 elements: head, month, placeholder for nav', assert => {
     assert.equal(children[1].type, 'table', 'Month should be a table');
     assert.equal(children[1].props.className, 'calendar__month', 'And should have className calendar__month');
 
-    assert.equal(children[2], '', 'Placeholder is empty string');
+    assert.false(children[2], 'Month Placeholder is false');
+    assert.false(children[3], 'Year Placeholder is false');
 
     assert.end();
 });
@@ -184,8 +185,8 @@ test('Change Month Action', assert => {
     const nextMonthButton = nextMonthButtonInstance[Object.keys(nextMonthButtonInstance)[0]]._currentElement;
 
     assert.equal(currentDay.props.children, 1, 'Should be first of september');
-    assert.equal(prevMonthButton.props.children, '<<', 'Should be left change month button');
-    assert.equal(nextMonthButton.props.children, '>>', 'Should be right change month button');
+    assert.equal(prevMonthButton.props.children, '←', 'Should be left change month button');
+    assert.equal(nextMonthButton.props.children, '→', 'Should be right change month button');
 
     assert.equal(c.state.month, currentMonth, 'Should be September');
 

@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = require('react');
@@ -23,6 +25,14 @@ var _classnames2 = _interopRequireDefault(_classnames);
 var _WeekDay = require('./WeekDay');
 
 var _WeekDay2 = _interopRequireDefault(_WeekDay);
+
+var _YearPicker = require('./YearPicker');
+
+var _YearPicker2 = _interopRequireDefault(_YearPicker);
+
+var _MonthPicker = require('./MonthPicker');
+
+var _MonthPicker2 = _interopRequireDefault(_MonthPicker);
 
 var _locale = require('./locale');
 
@@ -53,11 +63,58 @@ var Datepicker = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Datepicker).call(this, props));
 
+        _this.setOuterDate = function (date) {
+            _this.props.onClick(date, _this.props.name || 'date_' + _this.id);
+        };
+
+        _this.onYearNameClick = function () {
+            _this.setState({
+                dateVisible: false,
+                monthVisible: false,
+                yearVisible: true
+            });
+        };
+
+        _this.onYearClick = function (year) {
+            _this.restoreDateVisibility({ year: year });
+        };
+
+        _this.onMonthNameClick = function () {
+            _this.setState({
+                dateVisible: false,
+                monthVisible: true,
+                yearVisible: false
+            });
+        };
+
+        _this.onMonthClick = function (month) {
+            _this.restoreDateVisibility({ month: month });
+        };
+
+        _this.restoreDateVisibility = function (model) {
+            var month = model.month || _this.state.month;
+            var year = model.year || _this.state.year;
+            var day = _this.state.date.getDate();
+            var date = new Date(year, month, day, 0, 0, 0);
+
+            _this.setState(_extends({
+                date: date,
+                dateVisible: true,
+                monthVisible: false,
+                yearVisible: false
+            }, model), _this.setOuterDate.bind(_this, date));
+        };
+
         _this.state = {
             date: null,
             month: null,
             range: null,
-            year: null
+            year: null,
+
+            // UI: Visibility levels
+            dateVisible: true,
+            monthVisible: false,
+            yearVisible: false
         };
 
         _this.id = id++;
@@ -123,20 +180,26 @@ var Datepicker = function (_React$Component) {
     }, {
         key: 'changeMonth',
         value: function changeMonth(direction) {
-            var nextMonth = this.state.month + direction;
-            var isMonthAvailable = nextMonth >= 0 && nextMonth <= 11;
+            if (this.state.dateVisible) {
+                var nextMonth = this.state.month + direction;
+                var isMonthAvailable = nextMonth >= 0 && nextMonth <= 11;
 
-            var model = void 0;
-            if (!isMonthAvailable) {
-                model = {
-                    month: direction === 1 ? 0 : 11,
-                    year: this.state.year + direction
-                };
-            } else {
-                model = { month: this.state.month + direction };
+                var model = void 0;
+                if (!isMonthAvailable) {
+                    model = {
+                        month: direction === 1 ? 0 : 11,
+                        year: this.state.year + direction
+                    };
+                } else {
+                    model = { month: this.state.month + direction };
+                }
+
+                this.setState(model);
             }
 
-            this.setState(model);
+            if (this.state.yearVisible) {
+                this.setState({ year: this.state.year + (direction + 1 ? 12 : -12) });
+            }
         }
 
         /**
@@ -148,7 +211,7 @@ var Datepicker = function (_React$Component) {
         key: 'onClick',
         value: function onClick(date) {
             if (date) {
-                this.setState({ date: date }, this.props.onClick(date, this.props.name || 'date_' + this.id));
+                this.setState({ date: date }, this.setOuterDate.bind(this, date));
             }
         }
     }, {
@@ -200,6 +263,9 @@ var Datepicker = function (_React$Component) {
                 );
             });
         }
+
+        // TODO: Fix direction
+
     }, {
         key: 'renderNavigation',
         value: function renderNavigation() {
@@ -209,16 +275,31 @@ var Datepicker = function (_React$Component) {
                 _react2.default.createElement(
                     'span',
                     {
-                        className: 'calendar__arrow calendar__arrow_right',
-                        onClick: this.changeMonth.bind(this, 1) },
-                    '>>'
+                        className: 'calendar__arrow calendar__arrow_left',
+                        onClick: this.changeMonth.bind(this, -1) },
+                    '←'
+                ),
+                _react2.default.createElement(
+                    'span',
+                    { className: 'calendar__month-name' },
+                    _react2.default.createElement(
+                        'span',
+                        { className: 'calendar__head-month', onClick: this.onMonthNameClick },
+                        _locale.MONTH_NAMES[this.props.locale][this.state.month]
+                    ),
+                    ', ',
+                    _react2.default.createElement(
+                        'span',
+                        { className: 'calendar__head-year', onClick: this.onYearNameClick },
+                        this.state.year
+                    )
                 ),
                 _react2.default.createElement(
                     'span',
                     {
-                        className: 'calendar__arrow calendar__arrow_left',
-                        onClick: this.changeMonth.bind(this, -1) },
-                    '<<'
+                        className: 'calendar__arrow calendar__arrow_right',
+                        onClick: this.changeMonth.bind(this, 1) },
+                    '→'
                 )
             );
         }
@@ -231,14 +312,9 @@ var Datepicker = function (_React$Component) {
                 _react2.default.createElement(
                     'div',
                     { className: 'calendar__head' },
-                    !this.props.disableNavigation && !this.props.outsideNavigation ? this.renderNavigation() : '',
-                    _react2.default.createElement(
-                        'span',
-                        { className: 'calendar__month-name' },
-                        _locale.MONTH_NAMES[this.props.locale][this.state.month] + ', ' + this.state.year
-                    )
+                    !this.props.disableNavigation && !this.props.outsideNavigation ? this.renderNavigation() : ''
                 ),
-                _react2.default.createElement(
+                this.state.dateVisible && _react2.default.createElement(
                     'table',
                     { className: 'calendar__month' },
                     _react2.default.createElement(
@@ -256,7 +332,12 @@ var Datepicker = function (_React$Component) {
                         this.renderMonth()
                     )
                 ),
-                !this.props.disableNavigation && this.props.outsideNavigation ? this.renderNavigation() : ''
+                this.state.monthVisible && _react2.default.createElement(_MonthPicker2.default, {
+                    currentMonth: this.props.month,
+                    onClick: this.onMonthClick,
+                    locale: this.props.locale
+                }),
+                this.state.yearVisible && _react2.default.createElement(_YearPicker2.default, { currentYear: this.state.year, onClick: this.onYearClick })
             );
         }
     }]);
