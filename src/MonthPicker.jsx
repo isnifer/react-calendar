@@ -1,12 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import cn from 'classnames';
+import DateRange from 'moment-range';
 import { MONTH_NAMES } from './locale';
 
 const TODAY_MONTH = new Date().getMonth();
 class MonthPicker extends Component {
     constructor(props) {
         super(props);
-
 
         this.state = {
             month: parseInt(props.currentMonth, 10) || TODAY_MONTH,
@@ -27,15 +27,24 @@ class MonthPicker extends Component {
     render() {
         return (
             <div className="calendar__months">
-                {MONTH_NAMES[this.props.locale].map((item, i) =>(
-                    <div
-                        className={cn('calendar__month-item', {'calendar__month-item_current': i === this.state.month})}
-                        onClick={this.onClick}
-                        id={`month_${i}`}
-                        key={i}>
-                        {item}
-                    </div>
-                ))}
+                {MONTH_NAMES[this.props.locale].map((item, i) => {
+                    const range =
+                        new DateRange(new Date(this.props.year, i, 1), new Date(this.props.year, i, 31));
+                    const disabled = !range.overlaps(this.props.range);
+                    return (
+                        <div
+                            className={cn(
+                                'calendar__month-item',
+                                {'calendar__month-item_current': i === this.state.month},
+                                {'calendar__month-item_disabled': disabled},
+                            )}
+                            onClick={this.onClick}
+                            id={`month_${i}`}
+                            key={i}>
+                            {item}
+                        </div>
+                    );
+                })}
             </div>
         );
     }
@@ -44,6 +53,11 @@ class MonthPicker extends Component {
 MonthPicker.propTypes = {
     locale: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
+    range: PropTypes.instanceOf(DateRange).isRequired,
+    year: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+    ]),
     currentMonth: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.number,

@@ -208,6 +208,12 @@ body {
 .calendar__month-item_current:hover {
   background: #673AB7;
 }
+.calendar__year_disabled,
+.calendar__month-item_disabled {
+  background: #455A64;
+  color: #B6B6B6;
+  cursor: not-allowed;
+}
 .calendar__month-item {
   font-size: 14px;
 }

@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import cn from 'classnames';
+import DateRange from 'moment-range';
 
 const range = currentYear => {
     const year = parseInt(currentYear, 10);
@@ -36,14 +37,22 @@ class YearPicker extends Component {
     render() {
         return (
             <div className="calendar__years">
-                {range(this.state.year).map(item =>(
-                    <div
-                        className={cn('calendar__year', {calendar__year_current: item === this.state.year})}
-                        onClick={this.onClick}
-                        key={item}>
-                        {item}
-                    </div>
-                ))}
+                {range(this.state.year).map(item => {
+                    const range = new DateRange(new Date(item, 0, 1), new Date(item, 11, 31));
+                    const disabled = !range.overlaps(this.props.range);
+                    return (
+                        <div
+                            className={cn(
+                                'calendar__year',
+                                {calendar__year_current: item === this.state.year},
+                                {calendar__year_disabled: disabled},
+                            )}
+                            onClick={this.onClick}
+                            key={item}>
+                            {item}
+                        </div>
+                    );
+                })}
             </div>
         );
     }
@@ -51,6 +60,7 @@ class YearPicker extends Component {
 
 YearPicker.propTypes = {
     onClick: PropTypes.func.isRequired,
+    range: React.PropTypes.instanceOf(DateRange).isRequired,
     currentYear: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.number,

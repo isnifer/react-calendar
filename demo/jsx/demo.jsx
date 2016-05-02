@@ -11,8 +11,8 @@ function transformDate (date) {
     return [day, month, date.getFullYear()].join('.');
 }
 
-const leftRangeDate = new Date(2015, 7, 20);
-const rightRangeDate = new Date(2015, 7, 27);
+const leftRangeDate = new Date(2012, 7, 20);
+const rightRangeDate = new Date(2016, 7, 27);
 
 class Demo extends React.Component {
     constructor (props) {

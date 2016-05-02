@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import DateRange from 'moment-range';
 import { Calendar } from 'calendar';
 import cn from 'classnames';
@@ -18,7 +18,7 @@ function resetDate (date) {
 }
 
 let id = 1;
-class Datepicker extends React.Component {
+class Datepicker extends Component {
     constructor (props) {
         super(props);
 
@@ -252,11 +252,13 @@ class Datepicker extends React.Component {
                         currentMonth={this.props.month}
                         onClick={this.onMonthClick}
                         locale={this.props.locale}
+                        range={this.state.range}
+                        year={this.state.year}
                     />
                 }
 
                 {this.state.yearVisible &&
-                    <YearPicker currentYear={this.state.year} onClick={this.onYearClick} />
+                    <YearPicker currentYear={this.state.year} onClick={this.onYearClick} range={this.state.range} />
                 }
             </div>
         );
@@ -264,15 +266,15 @@ class Datepicker extends React.Component {
 }
 
 Datepicker.propTypes = {
-    onClick: React.PropTypes.func,
-    range: React.PropTypes.instanceOf(DateRange),
-    disableNavigation: React.PropTypes.bool,
-    outsideNavigation: React.PropTypes.bool,
-    initialDate: React.PropTypes.instanceOf(Date),
-    locale: React.PropTypes.string,
-    minimumDate: React.PropTypes.instanceOf(Date),
-    maximumDate: React.PropTypes.instanceOf(Date),
-    name: React.PropTypes.string,
+    onClick: PropTypes.func,
+    range: PropTypes.instanceOf(DateRange),
+    disableNavigation: PropTypes.bool,
+    outsideNavigation: PropTypes.bool,
+    initialDate: PropTypes.instanceOf(Date),
+    locale: PropTypes.string,
+    minimumDate: PropTypes.instanceOf(Date),
+    maximumDate: PropTypes.instanceOf(Date),
+    name: PropTypes.string,
 };
 
 Datepicker.defaultProps = {
