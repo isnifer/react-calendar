@@ -4,6 +4,8 @@ import { Calendar } from 'calendar';
 import cn from 'classnames';
 
 import WeekDay from './WeekDay';
+import YearPicker from './YearPicker';
+import MonthPicker from './MonthPicker';
 import { MONTH_NAMES, WEEK_NAMES, WEEK_NAMES_SHORT } from './locale';
 
 /**
@@ -24,7 +26,12 @@ class Datepicker extends React.Component {
             date: null,
             month: null,
             range: null,
-            year: null
+            year: null,
+
+            // UI: Visibility levels
+            dateVisible: true,
+            monthVisible: false,
+            yearVisible: false,
         };
 
         this.id = id++;
@@ -83,20 +90,26 @@ class Datepicker extends React.Component {
      * @param {Number} direction - "1" or "-1"
      */
     changeMonth (direction) {
-        const nextMonth = this.state.month + direction;
-        const isMonthAvailable = nextMonth >= 0 && nextMonth <= 11;
+        if (this.state.dateVisible) {
+            const nextMonth = this.state.month + direction;
+            const isMonthAvailable = nextMonth >= 0 && nextMonth <= 11;
 
-        let model;
-        if (!isMonthAvailable) {
-            model = {
-                month: direction === 1 ? 0 : 11,
-                year: this.state.year + direction
-            };
-        } else {
-            model = {month: this.state.month + direction};
+            let model;
+            if (!isMonthAvailable) {
+                model = {
+                    month: direction === 1 ? 0 : 11,
+                    year: this.state.year + direction
+                };
+            } else {
+                model = {month: this.state.month + direction};
+            }
+
+            this.setState(model);
         }
 
-        this.setState(model);
+        if (this.state.yearVisible) {
+            this.setState({year: this.state.year + (direction + 1 ? 12 : -12)})
+        }
     }
 
     /**
@@ -105,8 +118,51 @@ class Datepicker extends React.Component {
      */
     onClick (date) {
         if (date) {
-            this.setState({date}, this.props.onClick(date, this.props.name || `date_${this.id}`));
+            this.setState({date}, this.setOuterDate.bind(this, date));
         }
+    }
+
+    setOuterDate = date => {
+        this.props.onClick(date, this.props.name || `date_${this.id}`);
+    }
+
+    onYearNameClick = () => {
+        this.setState({
+            dateVisible: false,
+            monthVisible: false,
+            yearVisible: true,
+        });
+    }
+
+    onYearClick = year => {
+        this.restoreDateVisibility({year});
+    }
+
+    onMonthNameClick = () => {
+        this.setState({
+            dateVisible: false,
+            monthVisible: true,
+            yearVisible: false,
+        });
+    }
+
+    onMonthClick = month => {
+        this.restoreDateVisibility({month});
+    }
+
+    restoreDateVisibility = model => {
+        const month = model.month || this.state.month;
+        const year = model.year || this.state.year;
+        const day = this.state.date.getDate();
+        const date = new Date(year, month, day, 0, 0, 0);
+
+        this.setState({
+            date,
+            dateVisible: true,
+            monthVisible: false,
+            yearVisible: false,
+            ...model,
+        }, this.setOuterDate.bind(this, date));
     }
 
     renderMonth () {
@@ -144,18 +200,28 @@ class Datepicker extends React.Component {
         });
     }
 
+    // TODO: Fix direction
     renderNavigation () {
         return (
             <span className="calendar__arrows">
                 <span
-                    className="calendar__arrow calendar__arrow_right"
-                    onClick={this.changeMonth.bind(this, 1)}>
-                    {'>>'}
-                </span>
-                <span
                     className="calendar__arrow calendar__arrow_left"
                     onClick={this.changeMonth.bind(this, -1)}>
-                    {'<<'}
+                    ←
+                </span>
+                <span className="calendar__month-name">
+                    <span className="calendar__head-month" onClick={this.onMonthNameClick}>
+                        {MONTH_NAMES[this.props.locale][this.state.month]}
+                    </span>
+                    {', '}
+                    <span className="calendar__head-year" onClick={this.onYearNameClick}>
+                        {this.state.year}
+                    </span>
+                </span>
+                <span
+                    className="calendar__arrow calendar__arrow_right"
+                    onClick={this.changeMonth.bind(this, 1)}>
+                    →
                 </span>
             </span>
         );
@@ -166,21 +232,34 @@ class Datepicker extends React.Component {
             <div className="calendar">
                 <div className="calendar__head">
                     {!this.props.disableNavigation && !this.props.outsideNavigation ? this.renderNavigation() : ''}
-                    <span className="calendar__month-name">
-                        {MONTH_NAMES[this.props.locale][this.state.month] + ', ' + this.state.year}
-                    </span>
                 </div>
-                <table className="calendar__month">
-                    <thead>
-                        <tr className="calendar__week-names">
-                            {this.renderWeekdayNames()}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.renderMonth()}
-                    </tbody>
-                </table>
-                {!this.props.disableNavigation && this.props.outsideNavigation ? this.renderNavigation() : ''}
+
+                {this.state.dateVisible &&
+                    <div>
+                        <table className="calendar__month">
+                            <thead>
+                                <tr className="calendar__week-names">
+                                    {this.renderWeekdayNames()}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {this.renderMonth()}
+                            </tbody>
+                        </table>
+                    </div>
+                }
+
+                {this.state.monthVisible &&
+                    <MonthPicker
+                        currentMonth={this.props.month}
+                        onClick={this.onMonthClick}
+                        locale={this.props.locale}
+                    />
+                }
+
+                {this.state.yearVisible &&
+                    <YearPicker currentYear={this.state.year} onClick={this.onYearClick} />
+                }
             </div>
         );
     }

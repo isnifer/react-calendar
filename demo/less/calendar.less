@@ -13,8 +13,28 @@
     &__head {
         background: transparent;
         text-align: center;
-        line-height: 40px;
+        height: 40px;
         background: #FFCCBC;
+    }
+
+    &__head-month {
+        cursor: pointer;
+        display: inline-block;
+        border-bottom: 1px dotted rgba(0,0,0, .3);
+    }
+
+    &__head-year {
+        cursor: pointer;
+        display: inline-block;
+        border-bottom: 1px dotted rgba(0,0,0, .3);
+    }
+
+    &__arrows {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        align-items: center;
+        height: 40px;
     }
 
     &__arrow {
@@ -22,18 +42,13 @@
         height: 40px;
         color: #FF5722;
         cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
         &:hover {
             background: #FF5722;
             color: #FFCCBC;
-        }
-
-        &_left {
-            float: left;
-        }
-
-        &_right {
-            float: right;
         }
     }
 
@@ -95,5 +110,37 @@
                 background: #512DA8;
             }
         }
+    }
+
+    &__years,
+    &__months {
+        display: flex;
+        flex-flow: row wrap;
+    }
+
+    &__year,
+    &__month-item {
+        width: 25%;
+        height: 80px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #4CAF50;
+        color: #fff;
+        cursor: pointer;
+        .no-select();
+
+        &:hover {
+            background: #AFB42B;
+        }
+
+        &_current,
+        &_current:hover {
+            background: #673AB7;
+        }
+    }
+
+    &__month-item {
+        font-size: 14px;
     }
 }
