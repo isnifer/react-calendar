@@ -20,7 +20,12 @@ class MonthPicker extends Component {
     }
 
     onClick = ({target}) => {
-        const id = target.id.split('_')[1];
+        const props = target.id.split('_');
+        if (props[2] === 'true') {
+            return false;
+        }
+
+        const id = props[1];
         this.props.onClick(parseInt(id, 10));
     }
 
@@ -39,7 +44,7 @@ class MonthPicker extends Component {
                                 {'calendar__month-item_disabled': disabled},
                             )}
                             onClick={this.onClick}
-                            id={`month_${i}`}
+                            id={`month_${i}_${disabled}`}
                             key={i}>
                             {item}
                         </div>

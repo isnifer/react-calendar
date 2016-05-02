@@ -30,7 +30,12 @@ class YearPicker extends Component {
         }
     }
 
-    onClick = ({target: {textContent}}) => {
+    onClick = ({target: {textContent, id}}) => {
+        const props = id.split('_');
+        if (props[2] === 'true') {
+            return false;
+        }
+
         this.props.onClick(parseInt(textContent, 10));
     }
 
@@ -48,6 +53,7 @@ class YearPicker extends Component {
                                 {calendar__year_disabled: disabled},
                             )}
                             onClick={this.onClick}
+                            id={`year_${i}_${disabled}`}
                             key={item}>
                             {item}
                         </div>
