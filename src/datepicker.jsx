@@ -3,7 +3,7 @@ import DateRange from 'moment-range';
 import { Calendar } from 'calendar';
 import cn from 'classnames';
 
-import WeekDay from './WeekDay.jsx';
+import WeekDay from './WeekDay';
 import { MONTH_NAMES, WEEK_NAMES, WEEK_NAMES_SHORT } from './locale';
 
 /**
@@ -15,6 +15,7 @@ function resetDate (date) {
     return new Date(date.toString().replace(/\d{2}:\d{2}:\d{2}/, '00:00:00'));
 }
 
+let id = 1;
 class Datepicker extends React.Component {
     constructor (props) {
         super(props);
@@ -25,6 +26,8 @@ class Datepicker extends React.Component {
             range: null,
             year: null
         };
+
+        this.id = id++;
 
         this.calendar = new Calendar(props.locale === 'RU' ? 1 : 0);
 
@@ -98,11 +101,11 @@ class Datepicker extends React.Component {
 
     /**
      * Calendar state setter
-     * @param  {Date} date - выбранная дата
+     * @param  {Date} date - selected date
      */
     onClick (date) {
         if (date) {
-            this.setState({date}, this.props.onClick(date));
+            this.setState({date}, this.props.onClick(date, this.props.name || `date_${this.id}`));
         }
     }
 
@@ -192,6 +195,7 @@ Datepicker.propTypes = {
     locale: React.PropTypes.string,
     minimumDate: React.PropTypes.instanceOf(Date),
     maximumDate: React.PropTypes.instanceOf(Date),
+    name: React.PropTypes.string,
 };
 
 Datepicker.defaultProps = {
@@ -214,7 +218,7 @@ Datepicker.defaultProps = {
     minimumDate: new Date(1970, 0, 1),
 
     // Maximum available date
-    maximumDate: new Date(2100, 0, 1)
+    maximumDate: new Date(2100, 0, 1),
 };
 
 export default Datepicker;

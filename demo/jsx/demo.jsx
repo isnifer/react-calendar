@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import Datepicker from '../../build/';
+import Datepicker from '../../build/Datepicker';
 import DateRange from 'moment-range';
 
 function transformDate (date) {
@@ -19,11 +19,11 @@ class Demo extends React.Component {
         super(props);
 
         this.state = {
-            date1: transformDate(new Date()),
-            date2: transformDate(new Date(2015, 7, 8)),
-            date3: transformDate(new Date(2015, 7, 12)),
-            date4: leftRangeDate,
-            date5: rightRangeDate
+            date_1: transformDate(new Date()),
+            date_2: transformDate(new Date(2015, 7, 8)),
+            date_3: transformDate(new Date(2015, 7, 12)),
+            date_4: leftRangeDate,
+            date_5: rightRangeDate
         };
 
         this.onClick = this.onClick.bind(this);
@@ -33,24 +33,24 @@ class Demo extends React.Component {
         this.onClickFive = this.onClickFive.bind(this);
     }
 
-    onClick (date) {
-        this.setState({date: transformDate(date)});
+    onClick (date, name) {
+        this.setState({[name]: transformDate(date)});
     }
 
-    onClickTwo (date) {
-        this.setState({date2: transformDate(date)});
+    onClickTwo (date, name) {
+        this.setState({[name]: transformDate(date)});
     }
 
-    onClickThree (date) {
-        this.setState({date3: transformDate(date)});
+    onClickThree (date, name) {
+        this.setState({[name]: transformDate(date)});
     }
 
-    onClickFour (date) {
-        this.setState({date4: date});
+    onClickFour (date, name) {
+        this.setState({[name]: date});
     }
 
-    onClickFive (date) {
-        this.setState({date5: date});
+    onClickFive (date, name) {
+        this.setState({[name]: date});
     }
 
     render () {
@@ -72,7 +72,7 @@ class Demo extends React.Component {
                         type="text"
                         name="date"
                         className="demo__input"
-                        value={this.state.date1}
+                        value={this.state.date_1}
                         readOnly />
                     <Datepicker onClick={this.onClick} />
                     <div className="demo__props">
@@ -110,7 +110,7 @@ class Demo extends React.Component {
                             type="text"
                             name="date"
                             className="demo__input"
-                            value={this.state.date2}
+                            value={this.state.date_2}
                             readOnly />
                         <Datepicker
                             onClick={this.onClickTwo}
@@ -133,7 +133,7 @@ class Demo extends React.Component {
                             type="text"
                             name="date"
                             className="demo__input"
-                            value={this.state.date3}
+                            value={this.state.date_3}
                             readOnly />
                         <Datepicker
                             onClick={this.onClickThree}
@@ -177,13 +177,13 @@ class Demo extends React.Component {
                         <input
                             type="text"
                             className="demo__input"
-                            value={transformDate(this.state.date4)}
+                            value={transformDate(this.state.date_4)}
                             readOnly />
                         <Datepicker
                             onClick={this.onClickFour}
                             initialDate={leftRangeDate}
                             minimumDate={leftRangeDate}
-                            maximumDate={this.state.date5}
+                            maximumDate={this.state.date_5}
                             locale="EN" />
                         <div className="demo__props">
                             <div className="demo__title">Source</div>
@@ -191,13 +191,13 @@ class Demo extends React.Component {
                                 {'<input\n' +
                                  '  type="text"\n' +
                                  '  className="demo__input"\n' +
-                                 '  value={transformDate(this.state.date4)}\n' +
+                                 '  value={transformDate(this.state.date_4)}\n' +
                                  '  readOnly />\n' +
                                  '<Datepicker\n' +
                                  '  onClick={this.onClickFour}\n' +
                                  '  initialDate={leftRangeDate}\n' +
                                  '  minimumDate={leftRangeDate}\n' +
-                                 '  maximumDate={this.state.date5}\n' +
+                                 '  maximumDate={this.state.date_5}\n' +
                                  '  locale="EN" />'}
                             </pre>
                         </div>
@@ -206,12 +206,12 @@ class Demo extends React.Component {
                         <input
                             type="text"
                             className="demo__input"
-                            value={transformDate(this.state.date5)}
+                            value={transformDate(this.state.date_5)}
                             readOnly />
                         <Datepicker
                             onClick={this.onClickFive}
                             initialDate={rightRangeDate}
-                            minimumDate={this.state.date4}
+                            minimumDate={this.state.date_4}
                             maximumDate={rightRangeDate}
                             locale="EN" />
                         <div className="demo__props">
@@ -220,12 +220,12 @@ class Demo extends React.Component {
                                 {'<input\n' +
                                  '  type="text"\n' +
                                  '  className="demo__input"\n' +
-                                 '  value={transformDate(this.state.date5)}\n' +
+                                 '  value={transformDate(this.state.date_5)}\n' +
                                  '  readOnly />\n' +
                                  '<Datepicker\n' +
                                  '  onClick={this.onClickFive}\n' +
                                  '  initialDate={rightRangeDate}\n' +
-                                 '  minimumDate={this.state.date4}\n' +
+                                 '  minimumDate={this.state.date_4}\n' +
                                  '  maximumDate={rightRangeDate}\n' +
                                  '  locale="EN" />'}
                             </pre>
