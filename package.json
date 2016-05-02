@@ -57,7 +57,7 @@
     "demo": "./node_modules/.bin/webpack",
     "demo-server": "./node_modules/.bin/webpack-dev-server",
     "test": "./node_modules/.bin/babel-node test/datepicker.js | tap-spec",
-    "travis": "npm run coveralls",
+    "travis": "npm run build && npm run coveralls",
     "prepublish": "npm run build",
     "coverage": "./node_modules/.bin/babel-node ./node_modules/.bin/istanbul cover --dir coverage test/datepicker.js | tap-spec",
     "coveralls": "npm run coverage && ./node_modules/.bin/coveralls < coverage/lcov.info && ./node_modules/.bin/rimraf ./coverage"
