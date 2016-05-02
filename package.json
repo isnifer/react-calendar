@@ -50,7 +50,7 @@
     "react-dom": "^0.14.8 || ^15.0.1",
     "moment": "^2.13.0"
   },
-  "main": "build/Datepicker.js",
+  "main": "build/index.js",
   "scripts": {
     "build": "./node_modules/.bin/rimraf build && ./node_modules/.bin/babel src --out-dir build",
     "watch": "./node_modules/.bin/babel src --out-dir build -w",
