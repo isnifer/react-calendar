@@ -55,8 +55,8 @@ function resetDate(date) {
 
 var id = 1;
 
-var Datepicker = function (_React$Component) {
-    _inherits(Datepicker, _React$Component);
+var Datepicker = function (_Component) {
+    _inherits(Datepicker, _Component);
 
     function Datepicker(props) {
         _classCallCheck(this, Datepicker);
@@ -335,26 +335,28 @@ var Datepicker = function (_React$Component) {
                 this.state.monthVisible && _react2.default.createElement(_MonthPicker2.default, {
                     currentMonth: this.props.month,
                     onClick: this.onMonthClick,
-                    locale: this.props.locale
+                    locale: this.props.locale,
+                    range: this.state.range,
+                    year: this.state.year
                 }),
-                this.state.yearVisible && _react2.default.createElement(_YearPicker2.default, { currentYear: this.state.year, onClick: this.onYearClick })
+                this.state.yearVisible && _react2.default.createElement(_YearPicker2.default, { currentYear: this.state.year, onClick: this.onYearClick, range: this.state.range })
             );
         }
     }]);
 
     return Datepicker;
-}(_react2.default.Component);
+}(_react.Component);
 
 Datepicker.propTypes = {
-    onClick: _react2.default.PropTypes.func,
-    range: _react2.default.PropTypes.instanceOf(_momentRange2.default),
-    disableNavigation: _react2.default.PropTypes.bool,
-    outsideNavigation: _react2.default.PropTypes.bool,
-    initialDate: _react2.default.PropTypes.instanceOf(Date),
-    locale: _react2.default.PropTypes.string,
-    minimumDate: _react2.default.PropTypes.instanceOf(Date),
-    maximumDate: _react2.default.PropTypes.instanceOf(Date),
-    name: _react2.default.PropTypes.string
+    onClick: _react.PropTypes.func,
+    range: _react.PropTypes.instanceOf(_momentRange2.default),
+    disableNavigation: _react.PropTypes.bool,
+    outsideNavigation: _react.PropTypes.bool,
+    initialDate: _react.PropTypes.instanceOf(Date),
+    locale: _react.PropTypes.string,
+    minimumDate: _react.PropTypes.instanceOf(Date),
+    maximumDate: _react.PropTypes.instanceOf(Date),
+    name: _react.PropTypes.string
 };
 
 Datepicker.defaultProps = {

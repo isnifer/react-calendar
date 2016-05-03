@@ -14,6 +14,10 @@ var _classnames = require('classnames');
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
+var _momentRange = require('moment-range');
+
+var _momentRange2 = _interopRequireDefault(_momentRange);
+
 var _locale = require('./locale');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -34,12 +38,7 @@ var MonthPicker = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MonthPicker).call(this, props));
 
-        _this.onClick = function (_ref) {
-            var target = _ref.target;
-
-            var id = target.id.split('_')[1];
-            _this.props.onClick(parseInt(id, 10));
-        };
+        _initialiseProps.call(_this);
 
         _this.state = {
             month: parseInt(props.currentMonth, 10) || TODAY_MONTH
@@ -49,8 +48,8 @@ var MonthPicker = function (_Component) {
 
     _createClass(MonthPicker, [{
         key: 'componentWillReceiveProps',
-        value: function componentWillReceiveProps(_ref2) {
-            var month = _ref2.month;
+        value: function componentWillReceiveProps(_ref) {
+            var month = _ref.month;
 
             if (month !== this.props.month) {
                 this.setState({ month: month });
@@ -65,12 +64,14 @@ var MonthPicker = function (_Component) {
                 'div',
                 { className: 'calendar__months' },
                 _locale.MONTH_NAMES[this.props.locale].map(function (item, i) {
+                    var range = new _momentRange2.default(new Date(_this2.props.year, i, 1), new Date(_this2.props.year, i, 31));
+                    var disabled = !range.overlaps(_this2.props.range);
                     return _react2.default.createElement(
                         'div',
                         {
-                            className: (0, _classnames2.default)('calendar__month-item', { 'calendar__month-item_current': i === _this2.state.month }),
+                            className: (0, _classnames2.default)('calendar__month-item', { 'calendar__month-item_current': i === _this2.state.month }, { 'calendar__month-item_disabled': disabled }),
                             onClick: _this2.onClick,
-                            id: 'month_' + i,
+                            id: 'month_' + i + '_' + disabled,
                             key: i },
                         item
                     );
@@ -82,9 +83,27 @@ var MonthPicker = function (_Component) {
     return MonthPicker;
 }(_react.Component);
 
+var _initialiseProps = function _initialiseProps() {
+    var _this3 = this;
+
+    this.onClick = function (_ref2) {
+        var target = _ref2.target;
+
+        var props = target.id.split('_');
+        if (props[2] === 'true') {
+            return false;
+        }
+
+        var id = props[1];
+        _this3.props.onClick(parseInt(id, 10));
+    };
+};
+
 MonthPicker.propTypes = {
     locale: _react.PropTypes.string.isRequired,
     onClick: _react.PropTypes.func.isRequired,
+    range: _react.PropTypes.instanceOf(_momentRange2.default).isRequired,
+    year: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.number]),
     currentMonth: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.number])
 };
 

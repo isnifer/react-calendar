@@ -42,7 +42,7 @@ class YearPicker extends Component {
     render() {
         return (
             <div className="calendar__years">
-                {range(this.state.year).map(item => {
+                {range(this.state.year).map((item, i) => {
                     const range = new DateRange(new Date(item, 0, 1), new Date(item, 11, 31));
                     const disabled = !range.overlaps(this.props.range);
                     return (

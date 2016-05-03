@@ -14,6 +14,10 @@ var _classnames = require('classnames');
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
+var _momentRange = require('moment-range');
+
+var _momentRange2 = _interopRequireDefault(_momentRange);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -43,11 +47,7 @@ var YearPicker = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(YearPicker).call(this, props));
 
-        _this.onClick = function (_ref) {
-            var textContent = _ref.target.textContent;
-
-            _this.props.onClick(parseInt(textContent, 10));
-        };
+        _initialiseProps.call(_this);
 
         _this.state = {
             year: parseInt(props.currentYear, 10) || TODAY_YEAR
@@ -57,8 +57,8 @@ var YearPicker = function (_Component) {
 
     _createClass(YearPicker, [{
         key: 'componentWillReceiveProps',
-        value: function componentWillReceiveProps(_ref2) {
-            var currentYear = _ref2.currentYear;
+        value: function componentWillReceiveProps(_ref) {
+            var currentYear = _ref.currentYear;
 
             if (parseInt(currentYear, 10) !== this.props.year) {
                 this.setState({ year: parseInt(currentYear, 10) });
@@ -72,12 +72,15 @@ var YearPicker = function (_Component) {
             return _react2.default.createElement(
                 'div',
                 { className: 'calendar__years' },
-                range(this.state.year).map(function (item) {
+                range(this.state.year).map(function (item, i) {
+                    var range = new _momentRange2.default(new Date(item, 0, 1), new Date(item, 11, 31));
+                    var disabled = !range.overlaps(_this2.props.range);
                     return _react2.default.createElement(
                         'div',
                         {
-                            className: (0, _classnames2.default)('calendar__year', { calendar__year_current: item === _this2.state.year }),
+                            className: (0, _classnames2.default)('calendar__year', { calendar__year_current: item === _this2.state.year }, { calendar__year_disabled: disabled }),
                             onClick: _this2.onClick,
+                            id: 'year_' + i + '_' + disabled,
                             key: item },
                         item
                     );
@@ -89,8 +92,26 @@ var YearPicker = function (_Component) {
     return YearPicker;
 }(_react.Component);
 
+var _initialiseProps = function _initialiseProps() {
+    var _this3 = this;
+
+    this.onClick = function (_ref2) {
+        var _ref2$target = _ref2.target;
+        var textContent = _ref2$target.textContent;
+        var id = _ref2$target.id;
+
+        var props = id.split('_');
+        if (props[2] === 'true') {
+            return false;
+        }
+
+        _this3.props.onClick(parseInt(textContent, 10));
+    };
+};
+
 YearPicker.propTypes = {
     onClick: _react.PropTypes.func.isRequired,
+    range: _react2.default.PropTypes.instanceOf(_momentRange2.default).isRequired,
     currentYear: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.number])
 };
 
