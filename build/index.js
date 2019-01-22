@@ -61,7 +61,7 @@ var Datepicker = function (_Component) {
     function Datepicker(props) {
         _classCallCheck(this, Datepicker);
 
-        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Datepicker).call(this, props));
+        var _this = _possibleConstructorReturn(this, (Datepicker.__proto__ || Object.getPrototypeOf(Datepicker)).call(this, props));
 
         _this.setOuterDate = function (date) {
             _this.props.onClick(date, _this.props.name || 'date_' + _this.id);
@@ -277,7 +277,7 @@ var Datepicker = function (_Component) {
                     {
                         className: 'calendar__arrow calendar__arrow_left',
                         onClick: this.changeMonth.bind(this, -1) },
-                    '←'
+                    '\u2190'
                 ),
                 _react2.default.createElement(
                     'span',
@@ -299,7 +299,7 @@ var Datepicker = function (_Component) {
                     {
                         className: 'calendar__arrow calendar__arrow_right',
                         onClick: this.changeMonth.bind(this, 1) },
-                    '→'
+                    '\u2192'
                 )
             );
         }

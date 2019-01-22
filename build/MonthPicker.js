@@ -36,7 +36,7 @@ var MonthPicker = function (_Component) {
     function MonthPicker(props) {
         _classCallCheck(this, MonthPicker);
 
-        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MonthPicker).call(this, props));
+        var _this = _possibleConstructorReturn(this, (MonthPicker.__proto__ || Object.getPrototypeOf(MonthPicker)).call(this, props));
 
         _initialiseProps.call(_this);
 

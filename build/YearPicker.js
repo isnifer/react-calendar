@@ -45,7 +45,7 @@ var YearPicker = function (_Component) {
     function YearPicker(props) {
         _classCallCheck(this, YearPicker);
 
-        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(YearPicker).call(this, props));
+        var _this = _possibleConstructorReturn(this, (YearPicker.__proto__ || Object.getPrototypeOf(YearPicker)).call(this, props));
 
         _initialiseProps.call(_this);
 
@@ -96,9 +96,9 @@ var _initialiseProps = function _initialiseProps() {
     var _this3 = this;
 
     this.onClick = function (_ref2) {
-        var _ref2$target = _ref2.target;
-        var textContent = _ref2$target.textContent;
-        var id = _ref2$target.id;
+        var _ref2$target = _ref2.target,
+            textContent = _ref2$target.textContent,
+            id = _ref2$target.id;
 
         var props = id.split('_');
         if (props[2] === 'true') {

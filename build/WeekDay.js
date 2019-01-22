@@ -28,7 +28,7 @@ var WeekDay = function (_React$Component) {
     function WeekDay(props) {
         _classCallCheck(this, WeekDay);
 
-        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(WeekDay).call(this, props));
+        var _this = _possibleConstructorReturn(this, (WeekDay.__proto__ || Object.getPrototypeOf(WeekDay)).call(this, props));
 
         _this.inRange = _this.inRange.bind(_this);
         _this.onClick = _this.onClick.bind(_this);
