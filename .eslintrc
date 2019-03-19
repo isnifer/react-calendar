@@ -1,0 +1,3 @@
+{
+  "extends": "@detools/eslint-config"
+}
